@@ -27,7 +27,8 @@ class MakeInterface extends MakeStructure
     private function defineReplace(string $name): array
     {
         return [
-            'DummyClass' => 'I' . $name . $this->type
+            'DummyClass' => 'I' . $name . $this->type,
+            'DummyModel' => $name
         ];
     }
 
@@ -42,7 +43,7 @@ class MakeInterface extends MakeStructure
     {
         $replace = $this->defineReplace($name);
         $directory = app_path("Contracts/$name");
-        $path = $this->getFilePath($directory, $name, $this->type);
+        $path = $this->getFilePath($directory, 'I' . $name, $this->type);
         $stub = $this->getStubPath($this->type);
 
         return $this->createFromClassStub($stub, $path, $replace, $this->type);
