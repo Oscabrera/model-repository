@@ -3,6 +3,7 @@
     "description": "A Laravel package that streamlines the creation of repository-based structures with a custom Artisan command.",
     "type": "library",
     "license": "MIT",
+    "homepage": "https://github.com/Oscabrera/model-repository",
     "autoload": {
         "psr-4": {
             "Oscabrera\\ModelRepository\\": "src/"
@@ -11,7 +12,8 @@
     "authors": [
         {
             "name": "Oscar Cabrera",
-            "email": "oscabrera.dev@gmail.com"
+            "email": "oscabrera.dev@gmail.com",
+            "homepage": "https://github.com/Oscabrera"
         }
     ],
     "minimum-stability": "dev",
