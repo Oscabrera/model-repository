@@ -1,13 +1,11 @@
 # Your Package Name
 
-[//]: # ()
-[//]: # ([![Latest Version on Packagist]&#40;https://img.shields.io/packagist/v/oscabrera/model-repository.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/oscabrera/model-repository&#41;)
 
-[//]: # ([![Build Status]&#40;https://img.shields.io/travis/your-username/your-package-name/master.svg?style=flat-square&#41;]&#40;https://travis-ci.org/your-username/your-package-name&#41;)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/oscabrera/model-repository.svg?style=flat-square)](https://packagist.org/packages/oscabrera/model-repository)
 
-[//]: # ([![Quality Score]&#40;https://img.shields.io/scrutinizer/g/your-username/your-package-name.svg?style=flat-square&#41;]&#40;https://scrutinizer-ci.com/g/your-username/your-package-name&#41;)
+[![Quality Score](https://img.shields.io/scrutinizer/g/oscabrera/model-repository.svg?style=flat-square)](https://scrutinizer-ci.com/g/oscabrera/model-repository)
 
-[//]: # ([![Total Downloads]&#40;https://img.shields.io/packagist/dt/your-username/your-package-name.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/your-username/your-package-name&#41;)
+[![Total Downloads](https://img.shields.io/packagist/dt/oscabrera/model-repository.svg?style=flat-square)](https://packagist.org/packages/oscabrera/model-repository)
 
 Your Package Description goes here.
 
