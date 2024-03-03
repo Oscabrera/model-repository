@@ -1,0 +1,30 @@
+name: Auto Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Bump version and create release
+        run: |
+          version=$(jq -r .version semver.json)
+          composer config version $version
+          git commit -am "Bump version to $version"
+          git tag $version
+          git push --tags
