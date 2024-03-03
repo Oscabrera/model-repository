@@ -24,7 +24,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\VendorNameServiceProvider"
+                "ModelRepository\\ModelRepositoryServiceProvider"
             ]
         }
     },
