@@ -1,0 +1,7 @@
+<?php
+
+namespace App\Contracts\DummyModel;
+
+class DummyClass
+{
+}

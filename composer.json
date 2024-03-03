@@ -1,0 +1,30 @@
+{
+    "name": "oscabrera/model-repository",
+    "description": "A Laravel package that streamlines the creation of repository-based structures with a custom Artisan command.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Oscabrera\\ModelRepository\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oscar Cabrera",
+            "email": "oscabrera.dev@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.1",
+        "laravel/framework": "^9.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "VendorName\\VendorNameServiceProvider"
+            ]
+        }
+    },
+    "keywords": ["laravel", "repositories", "Artisan command", "structure", "package"]
+}

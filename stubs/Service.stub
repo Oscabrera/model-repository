@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Services\DummyModel;
+
+use App\Repositories\DummyModel\DummyRepository;
+
+/**
+ * Class DummyClass
+ *
+ * This class represents a DummyClass that interacts
+ * with a DummyRepository.
+ */
+class DummyClass
+{
+    /**
+     * Class Constructor.
+     *
+     * @param DummyRepository $repository The model object to be injected.
+     */
+    public function __construct(
+        protected DummyRepository $repository
+    ) {
+    }
+
+    /**
+     * Retrieves a record from the repository by the given ID.
+     *
+     * @param string $id The ID of the record to retrieve.
+     * @return DummyModel|null The retrieved record.
+     */
+    public function read($id): ?DummyModel
+    {
+        return $this->repository->read($id);
+    }
+}
