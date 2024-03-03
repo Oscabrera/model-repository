@@ -1,9 +1,9 @@
 <?php
 
-namespace ModelRepository;
+namespace Oscabrera\ModelRepository;
 
 use Illuminate\Support\ServiceProvider;
-use ModelRepository\Commands\Handlers;
+use Oscabrera\ModelRepository\Commands\Handlers;
 
 class ModelRepositoryServiceProvider extends ServiceProvider
 {

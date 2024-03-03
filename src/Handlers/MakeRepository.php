@@ -1,8 +1,8 @@
 <?php
 
-namespace ModelRepository\Handlers;
+namespace Oscabrera\ModelRepository\Handlers;
 
-use ModelRepository\Exception\StubException;
+use Oscabrera\ModelRepository\Exception\StubException;
 
 /**
  * Class MakeModel

@@ -1,6 +1,6 @@
 <?php
 
-namespace ModelRepository\Exception;
+namespace Oscabrera\ModelRepository\Exception;
 
 class StubException extends CustomException
 {

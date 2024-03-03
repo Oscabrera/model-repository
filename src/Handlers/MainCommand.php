@@ -1,9 +1,9 @@
 <?php
 
-namespace ModelRepository\Handlers;
+namespace Oscabrera\ModelRepository\Handlers;
 
-use ModelRepository\Classes\Options;
-use ModelRepository\Exception\StubException;
+use Oscabrera\ModelRepository\Classes\Options;
+use Oscabrera\ModelRepository\Exception\StubException;
 use Illuminate\Console\Command;
 
 class MainCommand

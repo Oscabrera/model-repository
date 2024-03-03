@@ -1,6 +1,6 @@
 <?php
 
-namespace ModelRepository\Classes;
+namespace Oscabrera\ModelRepository\Classes;
 
 /**
  * Class Options

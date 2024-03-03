@@ -1,9 +1,9 @@
 <?php
 
-namespace ModelRepository\Commands;
+namespace Oscabrera\ModelRepository\Commands;
 
-use ModelRepository\Classes\Options;
-use ModelRepository\Handlers\MainCommand;
+use Oscabrera\ModelRepository\Classes\Options;
+use Oscabrera\ModelRepository\Handlers\MainCommand;
 use Illuminate\Console\Command;
 
 class Handlers extends Command
