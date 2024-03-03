@@ -1,8 +1,10 @@
 #!/bin/bash
 
+cd "$(dirname "$0")" || exit
+
 # Read version and update type from the semver file
-version=$(jq -r '.version' ../semver)
-update_type=$(jq -r '.last-update-type' ../semver)
+version=$(jq -r '.version' semver.json)
+update_type=$(jq -r '.last-update-type' semver.json)
 
 # Output current version
 echo "Current version: $version"
