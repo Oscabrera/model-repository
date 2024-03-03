@@ -44,7 +44,7 @@ class MakeStructure
      */
     protected function getStubPath(string $type): string
     {
-        return __DIR__ . '/stubs/' . $type . '.stub';
+        return realpath(__DIR__ . '/../../stubs/' . $type . '.stub');
     }
 
     /**

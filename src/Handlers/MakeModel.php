@@ -23,7 +23,7 @@ class MakeModel
     public function make(Command $command, string $name, bool $hasMigration): void
     {
         $command->call('make:model', [
-            'name' => $name,
+            'name' => $name . '/' . $name,
             '--migration' => $hasMigration
         ]);
     }
