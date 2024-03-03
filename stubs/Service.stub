@@ -28,7 +28,7 @@ class DummyClass
      * @param string $id The ID of the record to retrieve.
      * @return DummyModel|null The retrieved record.
      */
-    public function read($id): ?DummyModel
+    public function read(string $id): ?DummyModel
     {
         return $this->repository->read($id);
     }
