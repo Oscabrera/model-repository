@@ -3,18 +3,17 @@
 namespace Oscabrera\ModelRepository\Handlers;
 
 use Oscabrera\ModelRepository\Classes\Options;
+use Oscabrera\ModelRepository\Exception\CreateStructureException;
 use Oscabrera\ModelRepository\Exception\StubException;
 use Illuminate\Console\Command;
+use Illuminate\Console\View\Components\Factory;
 
 class MainCommand
 {
-    public function __construct(
-        protected MakeModel $makeModel,
-        protected MakeRepository $makeRepository,
-        protected MakeService $makeService,
-        protected MakeInterface $makeInterface
-    ) {
-    }
+    /**
+     * @var Factory
+     */
+    protected Factory $output;
 
     /**
      * @var Command $command
@@ -30,6 +29,37 @@ class MainCommand
      * @var string
      */
     protected string $name;
+
+    /**
+     * Constructor for the class.
+     *
+     * @param MakeModel $makeModel The MakeModel instance.
+     * @param MakeRepository $makeRepository The MakeRepository instance.
+     * @param MakeService $makeService The MakeService instance.
+     * @param MakeInterface $makeInterface The MakeInterface instance.
+     * @param MakeSeeder $makeSeeder The MakeSeeder instance.
+     */
+    public function __construct(
+        protected MakeModel $makeModel,
+        protected MakeRepository $makeRepository,
+        protected MakeService $makeService,
+        protected MakeInterface $makeInterface,
+        protected MakeController $makeController,
+        protected MakeSeeder $makeSeeder
+    ) {
+    }
+
+
+    /**
+     * Sets the output object to be used for displaying messages.
+     *
+     * @param Factory $output The output object to be set.
+     * @return void
+     */
+    public function setOutput(Factory $output): void
+    {
+        $this->output = $output;
+    }
 
     public function handle(Command $command, string $name, Options $options): void
     {
@@ -50,13 +80,13 @@ class MainCommand
      */
     private function getOptions(): void
     {
-        $this->options->hasMigration = $this->command->option('migration') ?? false;
-        $this->options->hasInterface = $this->command->option('interface') ?? false;
-        $this->options->hasService = $this->command->option('service') ?? false;
-        $this->options->hasController = $this->command->option('controller') ?? false;
-        $this->options->hasRequest = $this->command->option('request') ?? false;
-        $this->options->hasResource = $this->command->option('resource') ?? false;
-        $this->options->hasCollection = $this->command->option('collection') ?? false;
+        $this->options->hasSeeder = boolval($this->command->option('seed'));
+        $this->options->hasMigration = boolval($this->command->option('migration'));
+        $this->options->hasService = boolval($this->command->option('service'));
+        $this->options->hasController = boolval($this->command->option('controller'));
+        $this->options->hasRequest = boolval($this->command->option('request'));
+        $this->options->hasResource = boolval($this->command->option('resource'));
+        $this->options->hasCollection = boolval($this->command->option('collection'));
     }
 
     /**
@@ -77,15 +107,27 @@ class MainCommand
     }
 
     /**
-     * Outputs an information message or an error message based on the provided message string.
+     * Displays an info message about a command.
      *
-     * @param string $message The message to be displayed.
+     * @param array{type: string, path: string} $info
      *
      * @return void
      */
-    private function infoCommand(string $message): void
+    public function infoCommand(array $info): void
     {
-        $message ? $this->command->info($message) : $this->command->error('Failed to create element.');
+        $this->output->info(sprintf('%s [%s] created successfully.', $info['type'], $info['path']));
+    }
+
+    /**
+     * Displays an error message.
+     *
+     * @param string $message The error message to be displayed.
+     * @param array{type: string, path: string} $info Additional information about the error.
+     * @return void
+     */
+    public function errorCommand(string $message, array $info): void
+    {
+        $this->output->error(sprintf('%s %s', $info['type'], $message));
     }
 
     /**
@@ -95,8 +137,7 @@ class MainCommand
      */
     private function makeModel(): void
     {
-        $this->makeModel->make($this->command, $this->name, $this->options->hasMigration);
-        $this->infoCommand('Model created successfully.');
+        $this->makeModel->make($this->command, $this->name, $this->options->hasMigration, $this->options->hasSeeder);
     }
 
     /**
@@ -106,11 +147,13 @@ class MainCommand
      */
     private function makeRepository(): void
     {
-        $result = '';
         try {
             $result = $this->makeRepository->make($this->name);
-        } catch (StubException $exception) {
-            $this->command->error($exception->getMessage());
+        } catch (StubException|CreateStructureException $exception) {
+            $info = $exception->getInput();
+            /** @var array{type: string, path: string} $info */
+            $this->errorCommand($exception->getMessage(), $info);
+            return;
         }
         $this->infoCommand($result);
     }
@@ -125,11 +168,13 @@ class MainCommand
         if (!$this->options->hasService) {
             return;
         }
-        $result = '';
         try {
-            $result = $this->makeService->make($this->name, $this->options->hasInterface);
-        } catch (StubException $exception) {
-            $this->command->error($exception->getMessage());
+            $result = $this->makeService->make($this->name);
+        } catch (StubException|CreateStructureException $exception) {
+            $info = $exception->getInput();
+            /** @var array{type: string, path: string} $info */
+            $this->errorCommand($exception->getMessage(), $info);
+            return;
         }
         $this->infoCommand($result);
     }
@@ -141,14 +186,16 @@ class MainCommand
      */
     private function makeInterface(): void
     {
-        if (!$this->options->hasInterface) {
+        if (!$this->options->hasService) {
             return;
         }
-        $result = '';
         try {
             $result = $this->makeInterface->make($this->name);
-        } catch (StubException $exception) {
-            $this->command->error($exception->getMessage());
+        } catch (StubException|CreateStructureException $exception) {
+            $info = $exception->getInput();
+            /** @var array{type: string, path: string} $info */
+            $this->errorCommand($exception->getMessage(), $info);
+            return;
         }
         $this->infoCommand($result);
     }
@@ -163,7 +210,15 @@ class MainCommand
         if (!$this->options->hasController) {
             return;
         }
-        $this->command->call('make:controller', ['name' => "{$this->name}\\{$this->name}Controller"]);
+        try {
+            $result = $this->makeController->make($this->name);
+        } catch (StubException|CreateStructureException $exception) {
+            $info = $exception->getInput();
+            /** @var array{type: string, path: string} $info */
+            $this->errorCommand($exception->getMessage(), $info);
+            return;
+        }
+        $this->infoCommand($result);
     }
 
     /**

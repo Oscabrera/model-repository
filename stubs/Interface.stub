@@ -2,6 +2,65 @@
 
 namespace App\Contracts\DummyModel;
 
-class DummyClass
+use App\Http\Requests\DummyModel\DummyModelRequest;
+use App\Http\Resources\DummyModel\DummyModelResource;
+use App\Http\Resources\DummyModel\DummyModelCollection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Oscabrera\ModelRepository\Exception\ModelCreateException;
+
+interface DummyClass
 {
+    /**
+     * Create a new spec resource.
+     *
+     * @param DummyModelRequest $request The request object containing the data for creating a spec.
+     *
+     * @return DummyModelResource Returns the newly created DummyModelResource if successful, or null if the spec creation failed.
+     *
+     * @throws ModelCreateException
+     */
+    public function create(DummyModelRequest $request): DummyModelResource;
+
+    /**
+     * Read a spec resource by ID.
+     *
+     * @param string $id The ID of the spec resource to fetch.
+     *
+     * @return DummyModelResource The spec resource, or null if not found.
+     *
+     * @throws ModelNotFoundException
+     */
+    public function read(string $id): DummyModelResource;
+
+    /**
+     * Updates a spec resource.
+     *
+     * @param string $id The ID of the spec resource to update.
+     * @param DummyModelRequest $request The request data for updating the spec.
+     *
+     * @return bool
+     *
+     * @throws ModelNotFoundException
+     */
+    public function update(string $id, DummyModelRequest $request): bool;
+
+    /**
+     * Deletes a DummyModel object based on the provided ID.
+     *
+     * @param string $id The ID of the DummyModel object to delete.
+     *
+     * @return bool True if the deletion was successful, false otherwise.
+     *
+     * @throws ModelNotFoundException
+     */
+    public function delete(string $id): bool;
+
+    /**
+     * List all DummyModel resources.
+     *
+     * @return DummyModelCollection
+     *
+     * @throws ModelNotFoundException
+     */
+    public function list(): DummyModelCollection;
 }

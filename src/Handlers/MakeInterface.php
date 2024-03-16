@@ -2,6 +2,7 @@
 
 namespace Oscabrera\ModelRepository\Handlers;
 
+use Oscabrera\ModelRepository\Exception\CreateStructureException;
 use Oscabrera\ModelRepository\Exception\StubException;
 
 /**
@@ -22,12 +23,12 @@ class MakeInterface extends MakeStructure
      *
      * This method is used to define and return an array of replace keys and values.
      *
-     * @return array An array of replace keys and values.
+     * @return array<string, string> An array of replace keys and values.
      */
     private function defineReplace(string $name): array
     {
         return [
-            'DummyClass' => 'I' . $name . $this->type,
+            'DummyClass' => 'I' . $name . 'Service',
             'DummyModel' => $name
         ];
     }
@@ -36,16 +37,17 @@ class MakeInterface extends MakeStructure
      * Create a repository file for a given name at the specified path.
      *
      * @param string $name The name of the repository.
-     * @return string
+     * @return array{type: string, path: string}
+     *
      * @throws StubException
+     * @throws CreateStructureException
      */
-    public function make(string $name): string
+    public function make(string $name): array
     {
         $replace = $this->defineReplace($name);
         $directory = app_path("Contracts/$name");
-        $path = $this->getFilePath($directory, 'I' . $name, $this->type);
-        $stub = $this->getStubPath($this->type);
+        $path = $this->getFilePath($directory, 'I' . $name, 'Service');
 
-        return $this->createFromClassStub($stub, $path, $replace, $this->type);
+        return $this->createFromClassStub($path, $replace, $this->type);
     }
 }

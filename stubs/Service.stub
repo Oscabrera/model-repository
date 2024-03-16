@@ -2,8 +2,13 @@
 
 namespace App\Services\DummyModel;
 
+use App\Contracts\DummyModel\DummyInterface;
+use App\Http\Requests\DummyModel\DummyModelRequest;
+use App\Http\Resources\DummyModel\DummyModelCollection;
+use App\Http\Resources\DummyModel\DummyModelResource;
 use App\Repositories\DummyModel\DummyRepository;
-use App\Models\DummyModel\DummyModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Oscabrera\ModelRepository\Exception\ModelCreateException;
 
 /**
  * Class DummyClass
@@ -11,7 +16,7 @@ use App\Models\DummyModel\DummyModel;
  * This class represents a DummyClass that interacts
  * with a DummyRepository.
  */
-class DummyClass
+class DummyClass implements DummyInterface
 {
     /**
      * Class Constructor.
@@ -24,13 +29,71 @@ class DummyClass
     }
 
     /**
-     * Retrieves a record from the repository by the given ID.
+     * Create a new DummyModel resource.
      *
-     * @param string $id The ID of the record to retrieve.
-     * @return DummyModel|null The retrieved record.
+     * @param DummyModelRequest $request The request object containing the data for creating a DummyModel.
+     *
+     * @return DummyModelResource Returns the newly created DummyModelResource if successful, or null if the DummyModel creation failed.
+     *
+     * @throws ModelCreateException
      */
-    public function read(string $id): ?DummyModel
+    public function create(DummyModelRequest $request): DummyModelResource
     {
-        return $this->repository->read($id);
+        return new DummyModelResource($this->repository->create($request->all()));
+    }
+
+    /**
+     * Read a DummyModel resource by ID.
+     *
+     * @param string $id The ID of the DummyModel resource to fetch.
+     *
+     * @return DummyModelResource The DummyModel resource, or null if not found.
+     *
+     * @throws ModelNotFoundException
+     */
+    public function read(string $id): DummyModelResource
+    {
+        return new DummyModelResource($this->repository->read($id));
+    }
+
+    /**
+     * Updates a DummyModel resource.
+     *
+     * @param string $id The ID of the DummyModel resource to update.
+     * @param DummyModelRequest $request The request data for updating the DummyModel.
+     *
+     * @return bool
+     *
+     * @throws ModelNotFoundException
+     */
+    public function update(string $id, DummyModelRequest $request): bool
+    {
+        return $this->repository->update($this->repository->read($id), $request->all());
+    }
+
+    /**
+     * Deletes a DummyModel object based on the provided ID.
+     *
+     * @param string $id The ID of the DummyModel object to delete.
+     *
+     * @return bool True if the deletion was successful, false otherwise.
+     *
+     * @throws ModelNotFoundException
+     */
+    public function delete(string $id): bool
+    {
+        return $this->repository->delete($this->repository->read($id));
+    }
+
+    /**
+     * List all DummyModel resources.
+     *
+     * @return DummyModelCollection
+     *
+     * @throws ModelNotFoundException
+     */
+    public function list(): DummyModelCollection
+    {
+        return new DummyModelCollection($this->repository->list());
     }
 }

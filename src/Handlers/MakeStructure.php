@@ -2,37 +2,50 @@
 
 namespace Oscabrera\ModelRepository\Handlers;
 
+use Oscabrera\ModelRepository\Exception\CreateStructureException;
 use Oscabrera\ModelRepository\Exception\StubException;
 use Illuminate\Support\Facades\File;
 
 class MakeStructure
 {
     /**
+     * Initializes a new instance of the class.
+     *
+     * @param File $file The file object to be used by the constructor.
+     *
+     * @return void
+     */
+    public function __construct(
+        protected File $file
+    ) {
+    }
+
+    /**
      * Creates a class from a stub.
      *
-     * @param string $stubPath
      * @param string $classPath
-     * @param array $replacements
+     * @param array<string, string> $replacements
      * @param string $type
-     * @return string
-     * @throws StubException
+     * @return array{type: string, path: string}
+     * @throws StubException|CreateStructureException
      */
     protected function createFromClassStub(
-        string $stubPath,
         string $classPath,
         array $replacements,
         string $type
-    ): string {
-        if (!file_exists($stubPath)) {
-            throw new StubException($type . ' stub not found.');
+    ): array {
+        if ($this->file::exists($classPath)) {
+            throw new CreateStructureException('already exists', $type, $classPath);
         }
+
+        $contentStub = $this->getStubContent($type);
         $classContent = str_replace(
             array_keys($replacements),
             array_values($replacements),
-            file_get_contents($stubPath)
+            $contentStub
         );
         file_put_contents($classPath, $classContent);
-        return $type . ' created successfully.';
+        return ['type' => $type, 'path' => $classPath];
     }
 
     /**
@@ -44,7 +57,7 @@ class MakeStructure
      */
     protected function getStubPath(string $type): string
     {
-        return realpath(__DIR__ . '/../../stubs/' . $type . '.stub');
+        return strval(realpath(__DIR__ . '/../../stubs/' . $type . '.stub'));
     }
 
     /**
@@ -53,10 +66,16 @@ class MakeStructure
      * @param string $type The type of the stub.
      *
      * @return string The content of the stub file.
+     * @throws StubException
      */
     protected function getStubContent(string $type): string
     {
-        return file_get_contents($this->getStubPath($type));
+        $stubPath = $this->getStubPath($type);
+        if (!file_exists($stubPath)) {
+            throw new StubException($type, $stubPath);
+        }
+
+        return strval(file_get_contents($stubPath));
     }
 
     /**
@@ -70,8 +89,8 @@ class MakeStructure
      */
     protected function getFilePath(string $directory, string $name, string $type): string
     {
-        if (!File::exists($directory)) {
-            File::makeDirectory($directory, 0755, true, true);
+        if (!$this->file::exists($directory)) {
+            $this->file::makeDirectory($directory, 0755, true, true);
         }
         return $directory . "/{$name}{$type}.php";
     }

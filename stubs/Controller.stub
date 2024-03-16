@@ -1,0 +1,118 @@
+<?php
+
+namespace App\Http\Controllers\DummyModel;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\DummyModel\DummyModelRequest;
+use App\Services\DummyModel\DummyService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Oscabrera\ModelRepository\Exception\ModelCreateException;
+use Spatie\RouteAttributes\Attributes\Delete;
+use Spatie\RouteAttributes\Attributes\Get;
+use Spatie\RouteAttributes\Attributes\Post;
+use Spatie\RouteAttributes\Attributes\Put;
+use Symfony\Component\HttpFoundation\Response;
+
+class DummyClass extends Controller
+{
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct(
+        protected DummyService $service
+    ) {
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return JsonResponse
+     */
+    #[Get(uri: 'ModelUri', name: 'ModelUri.list')]
+    public function list(): JsonResponse
+    {
+        return response()->json($this->service->list());
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param DummyModelRequest $request
+     *
+     * @return JsonResponse
+     */
+    #[Post(uri: 'ModelUri', name: 'ModelUri.create')]
+    public function create(DummyModelRequest $request): JsonResponse
+    {
+        try {
+            $created = $this->service->create($request);
+        } catch (ModelCreateException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
+        return response()->json($created);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param string $id
+     *
+     * @return JsonResponse
+     */
+    #[Get(uri: 'ModelUri/{id}', name: 'ModelUri.read')]
+    public function read(string $id): JsonResponse
+    {
+        try {
+            $read = $this->service->read($id);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json($read);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param DummyModelRequest $request
+     * @param string $id
+     *
+     * @return JsonResponse
+     */
+    #[Put(uri: 'ModelUri/{id}', name: 'ModelUri.update')]
+    public function update(DummyModelRequest $request, string $id): JsonResponse
+    {
+        try {
+            $this->service->update($id, $request);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * @param string $id
+     *
+     * @return JsonResponse
+     * @throws ModelNotFoundException
+     */
+    #[Delete(uri: 'ModelUri/{id}', name: 'ModelUri.destroy')]
+    public function destroy(string $id): JsonResponse
+    {
+        try {
+            $this->service->delete($id);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json([], Response::HTTP_NO_CONTENT);
+    }
+}

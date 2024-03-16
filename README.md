@@ -20,7 +20,10 @@ composer require oscabrera/model-repository
 ## Usage
 
 ```shell
-php artisan make:structure {name} {--migration} {--service} {--interface} {--controller} {--request} {--resource} {--collection}
+php artisan make:repository DummyModel --seed --migration --service --controller --request --resource --collection
 ```
+
+
+
 
 

@@ -2,6 +2,7 @@
 
 namespace Oscabrera\ModelRepository\Handlers;
 
+use Oscabrera\ModelRepository\Exception\CreateStructureException;
 use Oscabrera\ModelRepository\Exception\StubException;
 
 /**
@@ -17,44 +18,38 @@ class MakeService extends MakeStructure
      */
     private string $type = 'Service';
 
-    protected bool $hasInterface;
-
     /**
      * Define replace method.
      *
      * This method is used to define and return an array of replace keys and values.
      *
-     * @return array An array of replace keys and values.
+     * @return array<string, string> An array of replace keys and values.
      */
     private function defineReplace(string $name): array
     {
-        $replace = [
+        return [
             'DummyClass' => $name . $this->type,
             'DummyRepository' => $name . 'Repository',
-            'DummyModel' => $name
+            'DummyModel' => $name,
+            'DummyInterface' => 'I' . $name . 'Service',
         ];
-        if ($this->hasInterface) {
-            $replace['DummyInterface'] = 'I' . $name . 'Interface';
-        }
-        return $replace;
     }
 
     /**
      * Create a repository file for a given name at the specified path.
      *
      * @param string $name The name of the repository.
-     * @param bool $hasInterface
-     * @return string
+     * @return array{type: string, path: string}
+     *
      * @throws StubException
+     * @throws CreateStructureException
      */
-    public function make(string $name, bool $hasInterface): string
+    public function make(string $name): array
     {
-        $this->hasInterface = $hasInterface;
         $replace = $this->defineReplace($name);
         $directory = app_path("Services/$name");
         $path = $this->getFilePath($directory, $name, $this->type);
-        $stub = $hasInterface ? $this->getStubPath($this->type . 'WhitInterface') : $this->getStubPath($this->type);
 
-        return $this->createFromClassStub($stub, $path, $replace, $this->type);
+        return $this->createFromClassStub($path, $replace, $this->type);
     }
 }

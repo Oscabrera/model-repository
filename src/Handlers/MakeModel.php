@@ -20,11 +20,15 @@ class MakeModel
      * @param bool $hasMigration
      * @return void
      */
-    public function make(Command $command, string $name, bool $hasMigration): void
+    public function make(Command $command, string $name, bool $hasMigration, bool $hasSeeder): void
     {
-        $command->call('make:model', [
-            'name' => $name . '/' . $name,
-            '--migration' => $hasMigration
-        ]);
+        $command->call(
+            'make:model',
+            [
+                'name' => $name . '/' . $name,
+                '--migration' => $hasMigration,
+                '--seed' => $hasSeeder
+            ]
+        );
     }
 }

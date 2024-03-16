@@ -3,12 +3,16 @@
 namespace App\Repositories\DummyModel;
 
 use App\Models\DummyModel\DummyModel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Collection;
+use Closure;
+use Oscabrera\ModelRepository\Exception\ModelCreateException;
 
 /**
  * Class DummyClass
  *
  * This class represents a DummyClass that interacts
- * with a DummyModel.
+ * with DummyModel.
  */
 class DummyClass
 {
@@ -23,13 +27,90 @@ class DummyClass
     }
 
     /**
+     * Create a new record in the database.
+     *
+     * @param array<string, mixed> $entity
+     *  The object to be created.
+     *
+     * @return DummyModel The created object.
+     *
+     * @throws ModelCreateException
+     */
+    public function create(array $entity): DummyModel
+    {
+        $created = $this->model->create($entity);
+        if (!$created) {
+            throw new ModelCreateException('DummyModel', $entity);
+        }
+        return $created;
+    }
+
+    /**
      * Retrieves a record from the model by the given ID.
      *
      * @param string $id The ID of the record to retrieve.
-     * @return DummyModel|null The retrieved record.
+     *
+     * @return DummyModel The retrieved record.
+     * @return DummyModel The retrieved record.
+     *
+     * @throws ModelNotFoundException
      */
-    public function read(string $id): ?DummyModel
+    public function read(string $id): DummyModel
     {
-        return $this->model->find($id);
+        return $this->model->findOrFail($id);
+    }
+
+    /**
+     * Updates the given record in the database.
+     *
+     * @param DummyModel $entity The record to be updated.
+     *
+     * @param array<string, mixed> $dataEntity
+     *
+     * @return bool  True if the record was successfully updated, false otherwise.
+     */
+    public function update(DummyModel $entity, array $dataEntity): bool
+    {
+        return $entity->update($dataEntity);
+    }
+
+    /**
+     * Deletes a record from the database based on the given ID.
+     *
+     * @param DummyModel $entity
+     *
+     * @return bool True if the record is successfully deleted, false otherwise.
+     */
+    public function delete(DummyModel $entity): bool
+    {
+        return (bool)$entity->delete();
+    }
+
+    /**
+     * Lists records from the database based on the given conditions.
+     *
+     * @param array<string|int, string|bool|int|float|array<int|string, int|string|bool|float|Closure>> $conditions
+     * An array of conditions to filter the records (default: []).
+     *
+     * @return Collection An array of records that match the conditions.
+     */
+    public function list(array $conditions = []): Collection
+    {
+        return $this->model->where($conditions)->get();
+    }
+
+    /**
+     * Finds a single record from the database that matches the given conditions.
+     *
+     * @param array<string|int, string|bool|int|float|array<int|string, int|string|bool|float|Closure>> $conditions
+     * An associative array of conditions to match the record against.
+     *
+     * @return DummyModel  The fetched record if found.
+     *
+     * @throws ModelNotFoundException
+     */
+    public function search(array $conditions = []): DummyModel
+    {
+        return $this->model->where($conditions)->findOrFail();
     }
 }
