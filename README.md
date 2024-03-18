@@ -133,4 +133,5 @@ thanks to Spatie Ignition.
 
 ## **Additional resources:**
 
-- [Spatie Ignition](https://github.com/spatie/ignition)
+- [spatie/laravel-route-attributes](https://github.com/spatie/laravel-route-attributes)
+
