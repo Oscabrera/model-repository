@@ -5,8 +5,8 @@ namespace App\Repositories\DummyModel;
 use App\Models\DummyModel\DummyModel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
-use Closure;
 use Oscabrera\ModelRepository\Exception\ModelCreateException;
+use Oscabrera\ModelRepository\Utilities\QueryOptions;
 
 /**
  * Class DummyClass
@@ -88,29 +88,35 @@ class DummyClass
 
     /**
      * Lists records from the database based on the given conditions.
+     * @param QueryOptions $options
      *
-     * @param array<string|int, string|bool|int|float|array<int|string, int|string|bool|float|Closure>> $conditions
      * An array of conditions to filter the records (default: []).
      *
      * @return Collection An array of records that match the conditions.
      */
-    public function list(array $conditions = []): Collection
+    public function list(QueryOptions $options): Collection
     {
-        return $this->model->where($conditions)->get();
+        $query = $this->model->newQuery();
+        $options->conditionQuery($query);
+        return $query->get();
     }
 
     /**
      * Finds a single record from the database that matches the given conditions.
      *
-     * @param array<string|int, string|bool|int|float|array<int|string, int|string|bool|float|Closure>> $conditions
-     * An associative array of conditions to match the record against.
+     * @param QueryOptions $options
      *
      * @return DummyModel  The fetched record if found.
      *
      * @throws ModelNotFoundException
      */
-    public function search(array $conditions = []): DummyModel
+    public function search(QueryOptions $options): DummyModel
     {
-        return $this->model->where($conditions)->findOrFail();
+        $query = $this->model->newQuery();
+        $options->conditionQuery($query);
+        $query->limit(1);
+        $result = $query->firstOrFail();
+        /** @var DummyModel $result */
+        return $result;
     }
 }

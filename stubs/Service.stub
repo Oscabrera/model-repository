@@ -9,6 +9,7 @@ use App\Http\Resources\DummyModel\DummyModelResource;
 use App\Repositories\DummyModel\DummyRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Oscabrera\ModelRepository\Exception\ModelCreateException;
+use Oscabrera\ModelRepository\Utilities\QueryOptions;
 
 /**
  * Class DummyClass
@@ -94,6 +95,7 @@ class DummyClass implements DummyInterface
      */
     public function list(): DummyModelCollection
     {
-        return new DummyModelCollection($this->repository->list());
+        $options = new QueryOptions();
+        return new DummyModelCollection($this->repository->list($options));
     }
 }
