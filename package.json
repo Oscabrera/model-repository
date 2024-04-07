@@ -1,0 +1,20 @@
+{
+  "name": "model-repository-docs",
+  "version": "1.0.0",
+  "description": "documentation for Laravel Model Repository Generator",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:serve": "vitepress serve docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "author": "oscabrera",
+  "license": "ISC",
+  "dependencies": {
+    "vitepress": "latest",
+    "vue": "^3.4.21"
+  }
+}
