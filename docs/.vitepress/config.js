@@ -38,6 +38,12 @@ export default {
                     { text: "Example", link: "/query-options/example" },
                 ],
             },
+            {
+                text: "Code Quality",
+                items: [
+                    { text: "Ensuring Code Quality", link: "/code-quality/code-quality" }
+                ],
+            },
         ],
         footer: {
             message: "Released under the MIT License.",

@@ -2,6 +2,7 @@
 
 namespace Oscabrera\ModelRepository\Handlers;
 
+use Oscabrera\ModelRepository\Classes\Options;
 use Oscabrera\ModelRepository\Exception\CreateStructureException;
 use Oscabrera\ModelRepository\Exception\StubException;
 
@@ -39,17 +40,18 @@ class MakeService extends MakeStructure
      * Create a repository file for a given name at the specified path.
      *
      * @param string $name The name of the repository.
+     * @param Options $options
      * @return array{type: string, path: string}
      *
      * @throws StubException
      * @throws CreateStructureException
      */
-    public function make(string $name): array
+    public function make(string $name, Options $options): array
     {
         $replace = $this->defineReplace($name);
         $directory = app_path("Services/$name");
         $path = $this->getFilePath($directory, $name, $this->type);
 
-        return $this->createFromClassStub($path, $replace, $this->type);
+        return $this->createFromClassStub($path, $replace, $this->type, $options->force);
     }
 }

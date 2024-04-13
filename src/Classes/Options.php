@@ -15,6 +15,11 @@ class Options
     public bool $hasMigration = false;
 
     /**
+     * @var bool $hasFactory Indicates if the factory would be to created
+     */
+    public bool $hasFactory = false;
+
+    /**
      * @var bool $hasController Indicates if the controller would be to created
      */
     public bool $hasController = false;
@@ -43,4 +48,30 @@ class Options
      * @var bool $hasSeeder Indicates if the seeder would be to created
      */
     public bool $hasSeeder = false;
+
+    /**
+     * @var bool $force Indicates if the command should be forced
+     */
+    public bool $force = false;
+
+    /**
+     * Set all force options to true if $all is true.
+     *
+     * @param bool $all Whether to force all options or not.
+     * @return void
+     */
+    public function forceAll(bool $all): void
+    {
+        if (!$all) {
+            return;
+        }
+        $this->hasMigration = true;
+        $this->hasController = true;
+        $this->hasResource = true;
+        $this->hasCollection = true;
+        $this->hasRequest = true;
+        $this->hasService = true;
+        $this->hasSeeder = true;
+        $this->hasFactory = true;
+    }
 }

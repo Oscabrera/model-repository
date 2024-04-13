@@ -27,8 +27,18 @@ To utilize this command and generate the API for your model (`DummyModel` in thi
 command in your terminal:
 
 ```shell
-php artisan make:repository DummyModel --seed --migration --service --controller --request --resource --collection
+php artisan make:repository DummyModel --seed --migration --service --controller --request --resource --collection --factory
 ```
+
+Alternatively, you can use the --all option to generate all available components at once:
+
+```shell
+php artisan make:repository DummyModel --all
+```
+
+This is an example of the output you'll see after running the command:
+
+![Command Output](/src/images/make_repository.png)
 
 ## Command Breakdown:
 
@@ -38,14 +48,17 @@ DummyModel: Denotes the name of your model for which the API will be created.
 
 ### Optional Flags:
 
-- --seed: Generates a seed file to populate your database with sample data for testing purposes.
-- --migration: Creates a migration file to define the database schema for your model.
-- --service: Generates a service class to encapsulate business logic related to your model operations.
-- --controller: Creates a controller class that handles incoming API requests and interacts with the service layer.
-- --request: Generates request classes for validation and data formatting during API interactions.
-- --resource: Creates a resource class to facilitate data formatting for API responses.
-- --collection: Generates a collection class that assists in transforming model collections into a standardized format
-  for API responses.
+- **`--seed, -sd`**: Generates a seed file to populate your database with sample data for testing purposes.
+- **`--migration, -m`**: Creates a migration file to define the database schema for your model.
+- **`--factory, -f`**: Generates a factory class to generate dummy data for your model.
+- **`--service, -s`**: Generates a service class to encapsulate business logic related to your model operations.
+- **`--controller, -c`**: Creates a controller class that handles incoming API requests and interacts with the service layer.
+- **`--request, -r`**: Generates request classes for validation and data formatting during API interactions.
+- **`--resource, -res`**: Creates a resource class to facilitate data formatting for API responses.
+- **`--collection, -col`**: Generates a collection class that assists in transforming model collections into a standardized
+  format for API responses.
+- **`--all`**: Creates all structure for working with the Repository.
+- **`--force`**: Overwrites existing files if they already exist.
 
 ### Customization:
 
@@ -68,6 +81,10 @@ php artisan migrate
 This command processes the generated migration file, instructing your database to create the tables required for your
 model's data.
 
+::: tip
+Change the permissions of the Request more information [here](./Authorize)
+:::
+
 ## Running the API
 
 4. Ready for Action!
@@ -77,10 +94,10 @@ functional RESTful API for your model (`DummyModel`). You can interact with this
 depending on your preferences and testing strategies. Here are some potential approaches:
 
 - Direct API Calls: Employ HTTP request tools like Postman, curl, or an HTTP client library within your code to send
-requests to the API endpoints for various operations (create, read, update, and delete) on your model's data.
+  requests to the API endpoints for various operations (create, read, update, and delete) on your model's data.
 
 - Laravel's Testing Mechanisms: If you're utilizing Laravel's built-in testing framework (PHPUnit), you can craft unit
-tests to verify the API's functionality and ensure its correct behavior under various conditions.
+  tests to verify the API's functionality and ensure its correct behavior under various conditions.
 
 ---
 

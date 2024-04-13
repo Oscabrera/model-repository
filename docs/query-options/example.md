@@ -23,6 +23,7 @@ $options->conditionQuery($query);
 $users = $query->get();
 ```
 
-This example defines a `$conditions` array with various filtering conditions. Then, an instance of the `QueryOptions` class
+This example defines a `$conditions` array with various filtering conditions. Then, an instance of the `QueryOptions`
+class
 is created and applied to the query builder object using the `conditionQuery` method. Finally, the query is executed to
 retrieve the users that meet the specified conditions.

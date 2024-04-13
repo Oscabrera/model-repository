@@ -26,15 +26,17 @@ class MakeStructure
      * @param string $classPath
      * @param array<string, string> $replacements
      * @param string $type
+     * @param bool $force Determines if the class should be overwritten if it already exists.
      * @return array{type: string, path: string}
      * @throws StubException|CreateStructureException
      */
     protected function createFromClassStub(
         string $classPath,
         array $replacements,
-        string $type
+        string $type,
+        bool $force = false
     ): array {
-        if ($this->file::exists($classPath)) {
+        if ($this->file::exists($classPath) && !$force) {
             throw new CreateStructureException('already exists', $type, $classPath);
         }
 

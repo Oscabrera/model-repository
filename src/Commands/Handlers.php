@@ -11,12 +11,21 @@ class Handlers extends Command
     /**
      * The name and signature of the console command.
      *  use options:
-     *  --seed --migration --service --interface --controller --request --resource --collection
+     *  --seed --migration --service --interface --controller --request --resource --collection --all --force
      *
      * @var string
      */
     protected $signature = 'make:repository {name}'
-    . ' {--seed} {--migration} {--service} {--controller} {--request} {--resource} {--collection}';
+    . ' {--sd|seed : Create a seed file to populate your database with sample data}'
+    . ' {--m|migration : Create a migration file to define the database schema for your model}'
+    . ' {--f|factory :  Create the class even if the model already exists}'
+    . ' {--s|service : Create a service class to encapsulate business logic related to your repository operations}'
+    . ' {--c|controller : Create a controller class that handles incoming API requests and interacts with the service layer}'
+    . ' {--r|request : Create request classes for validation and data formatting during API interactions}'
+    . ' {--res|resource : Create a resource class to facilitate data formatting for API responses}'
+    . ' {--col|collection : Create a collection class that assists in transforming model collections into a standardized format for API responses}'
+    . ' {--all : Create all structure for working with the Repository}'
+    . ' {--force : Overwrites existing files if they already exist}';
 
     /**
      * The console command description.
@@ -24,7 +33,8 @@ class Handlers extends Command
      * @var string
      */
     protected $description = 'Create a new model and its repository, with the options for '
-    . 'creating all structure for working with the Repository';
+    . 'creating all structure for working with the Repository'
+    . ' with the options for creating all structure for working with the Repository';
 
     /**Command
      * Execute the console command.

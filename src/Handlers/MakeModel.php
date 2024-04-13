@@ -3,6 +3,7 @@
 namespace Oscabrera\ModelRepository\Handlers;
 
 use Illuminate\Console\Command;
+use Oscabrera\ModelRepository\Classes\Options;
 
 /**
  * Class MakeModel
@@ -17,17 +18,19 @@ class MakeModel
      *
      * @param Command $command
      * @param string $name
-     * @param bool $hasMigration
+     * @param Options $options
      * @return void
      */
-    public function make(Command $command, string $name, bool $hasMigration, bool $hasSeeder): void
+    public function make(Command $command, string $name, Options $options): void
     {
         $command->call(
             'make:model',
             [
                 'name' => $name . '/' . $name,
-                '--migration' => $hasMigration,
-                '--seed' => $hasSeeder
+                '--migration' => $options->hasMigration,
+                '--seed' => $options->hasSeeder,
+                '--factory' => $options->hasFactory,
+                '--force' => $options->force
             ]
         );
     }

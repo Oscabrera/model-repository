@@ -82,11 +82,14 @@ class MainCommand
     {
         $this->options->hasSeeder = boolval($this->command->option('seed'));
         $this->options->hasMigration = boolval($this->command->option('migration'));
+        $this->options->hasFactory = boolval($this->command->option('factory'));
         $this->options->hasService = boolval($this->command->option('service'));
         $this->options->hasController = boolval($this->command->option('controller'));
         $this->options->hasRequest = boolval($this->command->option('request'));
         $this->options->hasResource = boolval($this->command->option('resource'));
         $this->options->hasCollection = boolval($this->command->option('collection'));
+        $this->options->forceAll(boolval($this->command->option('all')));
+        $this->options->force = boolval($this->command->option('force'));
     }
 
     /**
@@ -137,7 +140,7 @@ class MainCommand
      */
     private function makeModel(): void
     {
-        $this->makeModel->make($this->command, $this->name, $this->options->hasMigration, $this->options->hasSeeder);
+        $this->makeModel->make($this->command, $this->name, $this->options);
     }
 
     /**
@@ -148,7 +151,7 @@ class MainCommand
     private function makeRepository(): void
     {
         try {
-            $result = $this->makeRepository->make($this->name);
+            $result = $this->makeRepository->make($this->name, $this->options);
         } catch (StubException|CreateStructureException $exception) {
             $info = $exception->getInput();
             /** @var array{type: string, path: string} $info */
@@ -169,7 +172,7 @@ class MainCommand
             return;
         }
         try {
-            $result = $this->makeService->make($this->name);
+            $result = $this->makeService->make($this->name, $this->options);
         } catch (StubException|CreateStructureException $exception) {
             $info = $exception->getInput();
             /** @var array{type: string, path: string} $info */
@@ -190,7 +193,7 @@ class MainCommand
             return;
         }
         try {
-            $result = $this->makeInterface->make($this->name);
+            $result = $this->makeInterface->make($this->name, $this->options);
         } catch (StubException|CreateStructureException $exception) {
             $info = $exception->getInput();
             /** @var array{type: string, path: string} $info */
@@ -211,7 +214,7 @@ class MainCommand
             return;
         }
         try {
-            $result = $this->makeController->make($this->name);
+            $result = $this->makeController->make($this->name, $this->options);
         } catch (StubException|CreateStructureException $exception) {
             $info = $exception->getInput();
             /** @var array{type: string, path: string} $info */
@@ -234,7 +237,13 @@ class MainCommand
         if (!$this->options->hasResource) {
             return;
         }
-        $this->command->call('make:resource', ['name' => "{$this->name}\\{$this->name}Resource"]);
+        $this->command->call(
+            'make:resource',
+            [
+                'name' => "{$this->name}\\{$this->name}Resource",
+                '--force' => $this->options->force
+            ]
+        );
     }
 
     /**
@@ -247,7 +256,13 @@ class MainCommand
         if (!$this->options->hasCollection) {
             return;
         }
-        $this->command->call('make:resource', ['name' => "{$this->name}\\{$this->name}Collection"]);
+        $this->command->call(
+            'make:resource',
+            [
+                'name' => "{$this->name}\\{$this->name}Collection",
+                '--force' => $this->options->force
+            ]
+        );
     }
 
     /**
@@ -260,6 +275,12 @@ class MainCommand
         if (!$this->options->hasRequest) {
             return;
         }
-        $this->command->call('make:request', ['name' => "{$this->name}\\{$this->name}Request"]);
+        $this->command->call(
+            'make:request',
+            [
+                'name' => "{$this->name}\\{$this->name}Request",
+                '--force' => $this->options->force
+            ]
+        );
     }
 }

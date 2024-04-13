@@ -11,6 +11,8 @@
     - Validation requests (`Request`): Validates input data for controller routes.
     - Response resource (`Resource`): Makes it easier to create JSON responses for controller routes.
     - Resource collection (`Collection`): Defines the structure of the JSON response for the resource list.
+    - Seeder (`Seeder`): Populates the database with sample data for testing purposes.
+    - Factory (`Factory`): Generates dummy data for testing purposes.
 - **Predefined CRUD methods:** The generated `Repository`, `Service` and `Controller` implement the standard methods of
   a RESTful API:
     - `create`: Create a new instance of the model
