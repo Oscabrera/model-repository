@@ -39,7 +39,7 @@ abstraction and organization to the code.
   define routes in the controller. For example:
 
 ```php
-#[Get(uri: 'model/{id}', name: 'model.read')]
+#[Get(uri: 'models/{id}', name: 'models.read')]
 public function read(string $id): JsonResponse
 {
     return response()->json($this->service->read($id));
@@ -71,7 +71,7 @@ composer require oscabrera/model-repository
 2. Run the command to generate the API:
 
 ```shell
-php artisan make:repository DummyModel --seed --migration --service --controller --request --resource --collection --factory 
+php artisan make:repository DummyModel --seed --migration --service --controller --request --factory 
 ```
 
 Alternatively, you can use the --all option to generate all available components at once:
