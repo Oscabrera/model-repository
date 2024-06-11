@@ -2,11 +2,18 @@
 
 namespace Oscabrera\ModelRepository\Handlers;
 
-use Oscabrera\ModelRepository\Classes\Options;
-use Oscabrera\ModelRepository\Exception\CreateStructureException;
-use Oscabrera\ModelRepository\Exception\StubException;
 use Illuminate\Console\Command;
 use Illuminate\Console\View\Components\Factory;
+use Oscabrera\ModelRepository\Classes\Options;
+use Oscabrera\ModelRepository\Exception\Command\CreateStructureException;
+use Oscabrera\ModelRepository\Exception\Command\StubException;
+use Oscabrera\ModelRepository\Handlers\Makers\MakeController;
+use Oscabrera\ModelRepository\Handlers\Makers\MakeInterfaceRepository;
+use Oscabrera\ModelRepository\Handlers\Makers\MakeInterfaceServices;
+use Oscabrera\ModelRepository\Handlers\Makers\MakeModel;
+use Oscabrera\ModelRepository\Handlers\Makers\MakeRepository;
+use Oscabrera\ModelRepository\Handlers\Makers\MakeSeeder;
+use Oscabrera\ModelRepository\Handlers\Makers\MakeService;
 
 class MainCommand
 {
@@ -36,16 +43,18 @@ class MainCommand
      * @param MakeModel $makeModel The MakeModel instance.
      * @param MakeRepository $makeRepository The MakeRepository instance.
      * @param MakeService $makeService The MakeService instance.
-     * @param MakeInterface $makeInterface The MakeInterface instance.
+     * @param MakeInterfaceServices $makeInterfaceServices The MakeInterface instance.
+     * @param MakeController $makeController The MakeController instance.
      * @param MakeSeeder $makeSeeder The MakeSeeder instance.
      */
     public function __construct(
         protected MakeModel $makeModel,
         protected MakeRepository $makeRepository,
+        protected MakeInterfaceRepository $makeInterfaceRepository,
         protected MakeService $makeService,
-        protected MakeInterface $makeInterface,
+        protected MakeInterfaceServices $makeInterfaceServices,
         protected MakeController $makeController,
-        protected MakeSeeder $makeSeeder
+        protected MakeSeeder $makeSeeder,
     ) {
     }
 
@@ -86,8 +95,6 @@ class MainCommand
         $this->options->hasService = boolval($this->command->option('service'));
         $this->options->hasController = boolval($this->command->option('controller'));
         $this->options->hasRequest = boolval($this->command->option('request'));
-        $this->options->hasResource = boolval($this->command->option('resource'));
-        $this->options->hasCollection = boolval($this->command->option('collection'));
         $this->options->forceAll(boolval($this->command->option('all')));
         $this->options->force = boolval($this->command->option('force'));
     }
@@ -100,12 +107,11 @@ class MainCommand
     public function run(): void
     {
         $this->makeModel();
+        $this->makeInterfaceRepository();
         $this->makeRepository();
-        $this->makeInterface();
+        $this->makeInterfaceService();
         $this->makeService();
         $this->makeController();
-        $this->makeResource();
-        $this->makeCollection();
         $this->makeRequest();
     }
 
@@ -144,6 +150,24 @@ class MainCommand
     }
 
     /**
+     * Create an interface for the repository.
+     *
+     * @return void
+     */
+    private function makeInterfaceRepository(): void
+    {
+        try {
+            $result = $this->makeInterfaceRepository->make($this->name, $this->options);
+        } catch (StubException|CreateStructureException $exception) {
+            $info = $exception->getInput();
+            /** @var array{type: string, path: string} $info */
+            $this->errorCommand($exception->getMessage(), $info);
+            return;
+        }
+        $this->infoCommand($result);
+    }
+
+    /**
      * Make a repository with the given name.
      *
      * @return void
@@ -152,6 +176,28 @@ class MainCommand
     {
         try {
             $result = $this->makeRepository->make($this->name, $this->options);
+            $this->makeRepository->binding($this->name);
+        } catch (StubException|CreateStructureException $exception) {
+            $info = $exception->getInput();
+            /** @var array{type: string, path: string} $info */
+            $this->errorCommand($exception->getMessage(), $info);
+            return;
+        }
+        $this->infoCommand($result);
+    }
+
+    /**
+     * Create an interface if the options flag hasInterface is true.
+     *
+     * @return void
+     */
+    private function makeInterfaceService(): void
+    {
+        if (!$this->options->hasService) {
+            return;
+        }
+        try {
+            $result = $this->makeInterfaceServices->make($this->name, $this->options);
         } catch (StubException|CreateStructureException $exception) {
             $info = $exception->getInput();
             /** @var array{type: string, path: string} $info */
@@ -173,27 +219,7 @@ class MainCommand
         }
         try {
             $result = $this->makeService->make($this->name, $this->options);
-        } catch (StubException|CreateStructureException $exception) {
-            $info = $exception->getInput();
-            /** @var array{type: string, path: string} $info */
-            $this->errorCommand($exception->getMessage(), $info);
-            return;
-        }
-        $this->infoCommand($result);
-    }
-
-    /**
-     * Create an interface if the options flag hasInterface is true.
-     *
-     * @return void
-     */
-    private function makeInterface(): void
-    {
-        if (!$this->options->hasService) {
-            return;
-        }
-        try {
-            $result = $this->makeInterface->make($this->name, $this->options);
+            $this->makeService->binding($this->name);
         } catch (StubException|CreateStructureException $exception) {
             $info = $exception->getInput();
             /** @var array{type: string, path: string} $info */
@@ -222,47 +248,6 @@ class MainCommand
             return;
         }
         $this->infoCommand($result);
-    }
-
-    /**
-     * Makes a resource.
-     *
-     * If the options "hasResource" is set to true,
-     * the method calls the "make:resource" command with the name of the resource.
-     *
-     * @return void
-     */
-    private function makeResource(): void
-    {
-        if (!$this->options->hasResource) {
-            return;
-        }
-        $this->command->call(
-            'make:resource',
-            [
-                'name' => "{$this->name}\\{$this->name}Resource",
-                '--force' => $this->options->force
-            ]
-        );
-    }
-
-    /**
-     * Make a collection resource.
-     *
-     * @return void
-     */
-    private function makeCollection(): void
-    {
-        if (!$this->options->hasCollection) {
-            return;
-        }
-        $this->command->call(
-            'make:resource',
-            [
-                'name' => "{$this->name}\\{$this->name}Collection",
-                '--force' => $this->options->force
-            ]
-        );
     }
 
     /**

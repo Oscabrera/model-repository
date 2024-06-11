@@ -5,19 +5,19 @@ The generated files are created within a folder named after your model, providin
 ```
 ├── app
 │   ├── Contracts
-│   │   └── Name
-│   │       └── INameService.php
+│   │   ├── Repositories
+│   │   │   └── Name
+│   │   │       └── INameRepository.php
+│   │   └── Services
+│   │       └── Name
+│   │           └── INameService.php
 │   ├── Http
 │   │   ├── Controllers
 │   │   │     └── Name
 │   │   │         └── NameController.php
-│   │   ├── Requests
-│   │   │     └── Name
-│   │   │         └── NameRequest.php
-│   │   └── Resources
+│   │   └── Requests
 │   │         └── Name
-│   │             ├── NameResource.php
-│   │             └── NameCollection.php
+│   │             └── NameRequest.php
 │   ├── Models
 │   │   └── Name
 │   │       └── Name.php

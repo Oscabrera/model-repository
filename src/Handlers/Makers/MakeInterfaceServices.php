@@ -1,10 +1,10 @@
 <?php
 
-namespace Oscabrera\ModelRepository\Handlers;
+namespace Oscabrera\ModelRepository\Handlers\Makers;
 
 use Oscabrera\ModelRepository\Classes\Options;
-use Oscabrera\ModelRepository\Exception\CreateStructureException;
-use Oscabrera\ModelRepository\Exception\StubException;
+use Oscabrera\ModelRepository\Exception\Command\CreateStructureException;
+use Oscabrera\ModelRepository\Exception\Command\StubException;
 
 /**
  * Class MakeModel
@@ -12,12 +12,12 @@ use Oscabrera\ModelRepository\Exception\StubException;
  * The MakeModel class is responsible for generating a model file and associated migration file
  * using the Laravel Artisan command 'make:model'.
  */
-class MakeService extends MakeStructure
+class MakeInterfaceServices extends MakeStructure
 {
     /**
      * @var string
      */
-    private string $type = 'Service';
+    private string $type = 'InterfaceService';
 
     /**
      * Define replace method.
@@ -29,10 +29,8 @@ class MakeService extends MakeStructure
     private function defineReplace(string $name): array
     {
         return [
-            'DummyClass' => $name . $this->type,
-            'DummyRepository' => $name . 'Repository',
             'DummyModel' => $name,
-            'DummyInterface' => 'I' . $name . 'Service',
+            'DummyClass' => 'I' . $name . 'Service'
         ];
     }
 
@@ -49,8 +47,8 @@ class MakeService extends MakeStructure
     public function make(string $name, Options $options): array
     {
         $replace = $this->defineReplace($name);
-        $directory = app_path("Services/$name");
-        $path = $this->getFilePath($directory, $name, $this->type);
+        $directory = app_path("Contracts/Services/$name");
+        $path = $this->getFilePath($directory, 'I' . $name, 'Service');
 
         return $this->createFromClassStub($path, $replace, $this->type, $options->force);
     }

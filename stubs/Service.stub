@@ -2,14 +2,12 @@
 
 namespace App\Services\DummyModel;
 
-use App\Contracts\DummyModel\DummyInterface;
+use App\Contracts\Repositories\DummyModel\DummyRepository;
+use App\Contracts\Services\DummyModel\DummyInterface;
 use App\Http\Requests\DummyModel\DummyModelRequest;
-use App\Http\Resources\DummyModel\DummyModelCollection;
-use App\Http\Resources\DummyModel\DummyModelResource;
-use App\Repositories\DummyModel\DummyRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Oscabrera\ModelRepository\Exception\ModelCreateException;
-use Oscabrera\ModelRepository\Utilities\QueryOptions;
+use Oscabrera\JsonApiFormatPaginate\Transformers\EntityResourceTransformer;
+use Oscabrera\JsonApiFormatPaginate\Transformers\JsonApiPaginationTransformer;
+use Oscabrera\QueryFilters\Utilities\QueryFilters;
 
 /**
  * Class DummyClass
@@ -34,13 +32,12 @@ class DummyClass implements DummyInterface
      *
      * @param DummyModelRequest $request The request object containing the data for creating a DummyModel.
      *
-     * @return DummyModelResource Returns the newly created DummyModelResource if successful, or null if the DummyModel creation failed.
-     *
-     * @throws ModelCreateException
+     * @return EntityResourceTransformer Returns the newly created UserResource if successful,
+     * or null if the User creation failed.
      */
-    public function create(DummyModelRequest $request): DummyModelResource
+    public function create(DummyModelRequest $request): EntityResourceTransformer
     {
-        return new DummyModelResource($this->repository->create($request->all()));
+        return new EntityResourceTransformer($this->repository->create($request->all()));
     }
 
     /**
@@ -48,13 +45,11 @@ class DummyClass implements DummyInterface
      *
      * @param string $id The ID of the DummyModel resource to fetch.
      *
-     * @return DummyModelResource The DummyModel resource, or null if not found.
-     *
-     * @throws ModelNotFoundException
+     * @return EntityResourceTransformer The DummyModel resource, or null if not found.
      */
-    public function read(string $id): DummyModelResource
+    public function read(string $id): EntityResourceTransformer
     {
-        return new DummyModelResource($this->repository->read($id));
+        return new EntityResourceTransformer($this->repository->read($id));
     }
 
     /**
@@ -64,8 +59,6 @@ class DummyClass implements DummyInterface
      * @param DummyModelRequest $request The request data for updating the DummyModel.
      *
      * @return bool
-     *
-     * @throws ModelNotFoundException
      */
     public function update(string $id, DummyModelRequest $request): bool
     {
@@ -78,8 +71,6 @@ class DummyClass implements DummyInterface
      * @param string $id The ID of the DummyModel object to delete.
      *
      * @return bool True if the deletion was successful, false otherwise.
-     *
-     * @throws ModelNotFoundException
      */
     public function delete(string $id): bool
     {
@@ -89,13 +80,11 @@ class DummyClass implements DummyInterface
     /**
      * List all DummyModel resources.
      *
-     * @return DummyModelCollection
-     *
-     * @throws ModelNotFoundException
+     * @return JsonApiPaginationTransformer
      */
-    public function list(): DummyModelCollection
+    public function list(): JsonApiPaginationTransformer
     {
-        $options = new QueryOptions();
-        return new DummyModelCollection($this->repository->list($options));
+        $options = new QueryFilters();
+        return new JsonApiPaginationTransformer($this->repository->list($options));
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oscabrera\ModelRepository\Handlers;
+namespace Oscabrera\ModelRepository\Handlers\Makers;
 
 use Illuminate\Console\Command;
 use Oscabrera\ModelRepository\Classes\Options;

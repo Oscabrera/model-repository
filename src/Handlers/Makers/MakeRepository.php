@@ -1,10 +1,10 @@
 <?php
 
-namespace Oscabrera\ModelRepository\Handlers;
+namespace Oscabrera\ModelRepository\Handlers\Makers;
 
 use Oscabrera\ModelRepository\Classes\Options;
-use Oscabrera\ModelRepository\Exception\CreateStructureException;
-use Oscabrera\ModelRepository\Exception\StubException;
+use Oscabrera\ModelRepository\Exception\Command\CreateStructureException;
+use Oscabrera\ModelRepository\Exception\Command\StubException;
 
 /**
  * Class MakeModel
@@ -15,6 +15,8 @@ use Oscabrera\ModelRepository\Exception\StubException;
 class MakeRepository extends MakeStructure
 {
     private string $type = 'Repository';
+    private string $repositoryNameSpace = 'App\Repositories';
+    private string $interfaceNameSpace = 'App\Contracts\Repositories';
 
     /**
      * Define replace method.
@@ -26,8 +28,9 @@ class MakeRepository extends MakeStructure
     private function defineReplace(string $name): array
     {
         return [
-            'DummyClass' => $name . $this->type,
             'DummyModel' => $name,
+            'DummyClass' => $name . $this->type,
+            'DummyInterface' => 'I' . $name . $this->type,
         ];
     }
 
@@ -48,5 +51,18 @@ class MakeRepository extends MakeStructure
         $path = $this->getFilePath($directory, $name, $this->type);
 
         return $this->createFromClassStub($path, $replace, $this->type, $options->force);
+    }
+
+    /**
+     * Bind a service implementation to its corresponding interface in the configuration file.
+     *
+     * @param string $name The name of the service.
+     * @return void
+     */
+    public function binding(string $name): void
+    {
+        $service = $this->repositoryNameSpace . '\\' . $name . '\\' . $name . $this->type;
+        $interface = $this->interfaceNameSpace . '\\' . $name . '\\' . 'I' . $name . $this->type;
+        $this->updateConfigFile($this->nameSnakeCase($name) . '-repository', $interface, $service);
     }
 }

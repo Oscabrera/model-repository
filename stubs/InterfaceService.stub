@@ -1,39 +1,39 @@
 <?php
 
-namespace App\Contracts\DummyModel;
+namespace App\Contracts\Services\DummyModel;
 
 use App\Http\Requests\DummyModel\DummyModelRequest;
-use App\Http\Resources\DummyModel\DummyModelResource;
-use App\Http\Resources\DummyModel\DummyModelCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Oscabrera\JsonApiFormatPaginate\Transformers\EntityResourceTransformer;
+use Oscabrera\JsonApiFormatPaginate\Transformers\JsonApiPaginationTransformer;
 use Oscabrera\ModelRepository\Exception\ModelCreateException;
 
 interface DummyClass
 {
     /**
-     * Create a new spec resource.
+     * Create a new DummyModel resource.
      *
      * @param DummyModelRequest $request The request object containing the data for creating a spec.
      *
-     * @return DummyModelResource Returns the newly created DummyModelResource if successful, or null if the spec creation failed.
+     * @return EntityResourceTransformer Returns the newly created DummyModelResource if successful, or null if the spec creation failed.
      *
      * @throws ModelCreateException
      */
-    public function create(DummyModelRequest $request): DummyModelResource;
+    public function create(DummyModelRequest $request): EntityResourceTransformer;
 
     /**
-     * Read a spec resource by ID.
+     * Read a DummyModel resource by ID.
      *
      * @param string $id The ID of the spec resource to fetch.
      *
-     * @return DummyModelResource The spec resource, or null if not found.
+     * @return EntityResourceTransformer The spec resource, or null if not found.
      *
      * @throws ModelNotFoundException
      */
-    public function read(string $id): DummyModelResource;
+    public function read(string $id): EntityResourceTransformer;
 
     /**
-     * Updates a spec resource.
+     * Updates a DummyModel resource.
      *
      * @param string $id The ID of the spec resource to update.
      * @param DummyModelRequest $request The request data for updating the spec.
@@ -58,9 +58,9 @@ interface DummyClass
     /**
      * List all DummyModel resources.
      *
-     * @return DummyModelCollection
+     * @return JsonApiPaginationTransformer
      *
      * @throws ModelNotFoundException
      */
-    public function list(): DummyModelCollection;
+    public function list(): JsonApiPaginationTransformer;
 }

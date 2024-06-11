@@ -4,11 +4,6 @@
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/Oscabrera/model-repository",
-    "autoload": {
-        "psr-4": {
-            "Oscabrera\\ModelRepository\\": "src/"
-        }
-    },
     "authors": [
         {
             "name": "Oscar Cabrera",
@@ -16,18 +11,32 @@
             "homepage": "https://github.com/Oscabrera"
         }
     ],
-    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Oscabrera\\ModelRepository\\": "src/"
+        }
+    },
     "require": {
         "php": "^8.1",
         "laravel/framework": "^9.0|^10.0|^11.0",
+        "oscabrera/laravel-query-filters": "^1.0",
+        "oscabrera/laravel-json-api-format-paginate": "^1.0",
         "spatie/laravel-route-attributes": "^1.21"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
-                "Oscabrera\\ModelRepository\\ModelRepositoryServiceProvider"
+                "Oscabrera\\ModelRepository\\RepositoryCommandServiceProvider"
             ]
         }
     },
-    "keywords": ["laravel", "repositories", "Artisan command", "structure", "package"]
+    "keywords": [
+        "laravel",
+        "repositories",
+        "Artisan command",
+        "structure",
+        "package"
+    ]
 }

@@ -2,11 +2,14 @@
 
 namespace App\Repositories\DummyModel;
 
+use App\Contracts\Repositories\DummyModel\DummyInterface;
 use App\Models\DummyModel\DummyModel;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Oscabrera\ModelRepository\Exception\ModelCreateException;
-use Oscabrera\ModelRepository\Utilities\QueryOptions;
+use Oscabrera\QueryFilters\Utilities\QueryFilters;
+use Spatie\QueryBuilder\QueryBuilder;
 
 /**
  * Class DummyClass
@@ -14,8 +17,13 @@ use Oscabrera\ModelRepository\Utilities\QueryOptions;
  * This class represents a DummyClass that interacts
  * with DummyModel.
  */
-class DummyClass
+class DummyClass implements DummyInterface
 {
+    /**
+     * @var array<int, string>
+     */
+    protected array $fields = [];
+
     /**
      * Class Constructor.
      *
@@ -38,10 +46,11 @@ class DummyClass
      */
     public function create(array $entity): DummyModel
     {
-        $created = $this->model->create($entity);
+        $created = $this->model->newQuery()->create($entity);
         if (!$created) {
-            throw new ModelCreateException('DummyModel', $entity);
+            throw new ModelCreateException(class_basename($this->model), $entity);
         }
+        /** @var DummyModel $created */
         return $created;
     }
 
@@ -51,13 +60,15 @@ class DummyClass
      * @param string $id The ID of the record to retrieve.
      *
      * @return DummyModel The retrieved record.
-     * @return DummyModel The retrieved record.
      *
      * @throws ModelNotFoundException
      */
     public function read(string $id): DummyModel
     {
-        return $this->model->findOrFail($id);
+        $found = $this->model->newQuery()->findOrFail($id);
+
+        /** @var DummyModel $found */
+        return $found;
     }
 
     /**
@@ -69,7 +80,7 @@ class DummyClass
      *
      * @return bool  True if the record was successfully updated, false otherwise.
      */
-    public function update(DummyModel $entity, array $dataEntity): bool
+    public function update(Model $entity, array $dataEntity): bool
     {
         return $entity->update($dataEntity);
     }
@@ -81,42 +92,28 @@ class DummyClass
      *
      * @return bool True if the record is successfully deleted, false otherwise.
      */
-    public function delete(DummyModel $entity): bool
+    public function delete(Model $entity): bool
     {
         return (bool)$entity->delete();
     }
 
     /**
-     * Lists records from the database based on the given conditions.
-     * @param QueryOptions $options
-     *
-     * An array of conditions to filter the records (default: []).
-     *
-     * @return Collection An array of records that match the conditions.
-     */
-    public function list(QueryOptions $options): Collection
+    * Lists records from the database based on the given conditions.
+    * @param QueryFilters $options
+    *
+    * An array of conditions to filter the records (default: []).
+    *
+    * @return LengthAwarePaginator  An array of records that match the conditions.
+    */
+    public function list(QueryFilters $options): LengthAwarePaginator
     {
-        $query = $this->model->newQuery();
-        $options->conditionQuery($query);
-        return $query->get();
-    }
+        $this->fields = $this->model->getFields();
+        $query = $this->model->newQuery()->filtering($options);
+        $query = QueryBuilder::for($query);
+        $query->allowedFilters($this->fields);
+        $query->allowedSorts($this->fields);
+        $query->allowedFields($this->fields);
 
-    /**
-     * Finds a single record from the database that matches the given conditions.
-     *
-     * @param QueryOptions $options
-     *
-     * @return DummyModel  The fetched record if found.
-     *
-     * @throws ModelNotFoundException
-     */
-    public function search(QueryOptions $options): DummyModel
-    {
-        $query = $this->model->newQuery();
-        $options->conditionQuery($query);
-        $query->limit(1);
-        $result = $query->firstOrFail();
-        /** @var DummyModel $result */
-        return $result;
+        return $query::jsonPaginate();
     }
 }

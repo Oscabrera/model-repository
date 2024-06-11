@@ -11,7 +11,7 @@ class Handlers extends Command
     /**
      * The name and signature of the console command.
      *  use options:
-     *  --seed --migration --service --interface --controller --request --resource --collection --all --force
+     *  --seed --migration --service --controller --request -all --force
      *
      * @var string
      */
@@ -22,8 +22,6 @@ class Handlers extends Command
     . ' {--s|service : Create a service class to encapsulate business logic related to your repository operations}'
     . ' {--c|controller : Create a controller class that handles incoming API requests and interacts with the service layer}'
     . ' {--r|request : Create request classes for validation and data formatting during API interactions}'
-    . ' {--res|resource : Create a resource class to facilitate data formatting for API responses}'
-    . ' {--col|collection : Create a collection class that assists in transforming model collections into a standardized format for API responses}'
     . ' {--all : Create all structure for working with the Repository}'
     . ' {--force : Overwrites existing files if they already exist}';
 

@@ -9,8 +9,6 @@
     - Service for the repository (`Service`): Implements the business logic for the model.
     - Controller for the service (`Controller`): Defines API routes and uses the service for API logic.
     - Validation requests (`Request`): Validates input data for controller routes.
-    - Response resource (`Resource`): Makes it easier to create JSON responses for controller routes.
-    - Resource collection (`Collection`): Defines the structure of the JSON response for the resource list.
     - Seeder (`Seeder`): Populates the database with sample data for testing purposes.
     - Factory (`Factory`): Generates dummy data for testing purposes.
 - **Predefined CRUD methods:** The generated `Repository`, `Service` and `Controller` implement the standard methods of
@@ -24,7 +22,7 @@
   define routes in the controller. For example:
 
 ```php
-#[Get(uri: 'model/{id}', name: 'model.read')]
+#[Get(uri: 'models/{id}', name: 'models.read')]
 public function read(string $id): JsonResponse
 {
     return response()->json($this->service->read($id));

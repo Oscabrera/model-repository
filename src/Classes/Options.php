@@ -25,16 +25,6 @@ class Options
     public bool $hasController = false;
 
     /**
-     * @var bool $hasResource Indicates if the resource would be to created
-     */
-    public bool $hasResource = false;
-
-    /**
-     * @var bool $hasCollection Indicates if the collection would be to created
-     */
-    public bool $hasCollection = false;
-
-    /**
      * @var bool $hasRequest Indicates if the request would be to created
      */
     public bool $hasRequest = false;
@@ -67,8 +57,6 @@ class Options
         }
         $this->hasMigration = true;
         $this->hasController = true;
-        $this->hasResource = true;
-        $this->hasCollection = true;
         $this->hasRequest = true;
         $this->hasService = true;
         $this->hasSeeder = true;

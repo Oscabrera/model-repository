@@ -30,12 +30,32 @@ export default {
                 ],
             },
             {
-                text: "Query Options",
+                text: "BindingServiceProvider",
                 collapsible: true,
                 items: [
-                    { text: "What is?", link: "/query-options/what-is" },
-                    { text: "Structure", link: "/query-options/structure" },
-                    { text: "Example", link: "/query-options/example" },
+                    { text: "Introduction", link: "/binding-service-provider/introduction" },
+                ],
+            },
+            {
+                text: "JSON:API",
+                collapsible: true,
+                items: [
+                    { text: "introduction", link: "/json-api/introduction" },
+                ],
+            },
+            {
+                text: "Query Filters",
+                collapsible: true,
+                items: [
+                    { text: "What is?", link: "/query-filters/what-is" },
+                ],
+            },
+            {
+                text: "Custom Exceptions",
+                collapsible: true,
+                items: [
+                    { text: "introduction", link: "/custom-exception/introduction" },
+                    { text: "Usage", link: "/custom-exception/usage" },
                 ],
             },
             {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\DummyModel;
 
+use App\Contracts\Services\DummyModel\DummyService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DummyModel\DummyModelRequest;
-use App\Services\DummyModel\DummyService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Oscabrera\ModelRepository\Exception\ModelCreateException;
@@ -101,7 +101,6 @@ class DummyClass extends Controller
      * @param string $id
      *
      * @return JsonResponse
-     * @throws ModelNotFoundException
      */
     #[Delete(uri: 'ModelUri/{id}', name: 'ModelUri.destroy')]
     public function destroy(string $id): JsonResponse

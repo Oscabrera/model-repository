@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Contracts\Repositories\DummyModel;
+
+use Oscabrera\ModelRepository\Contracts\Resources\IRepositoryResource;
+
+/**
+ *  Interface IUserRepository
+ *
+ * Defines the contract for a resource.
+ * the methods for a resource are: create, read, update, delete and list.
+ *
+ * This class does not contain additional methods to extended interfaces.
+ */
+interface DummyClass extends IRepositoryResource
+{
+}

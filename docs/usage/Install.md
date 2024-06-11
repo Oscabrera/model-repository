@@ -54,7 +54,6 @@ DummyModel: Denotes the name of your model for which the API will be created.
 - **`--service, -s`**: Generates a service class to encapsulate business logic related to your model operations.
 - **`--controller, -c`**: Creates a controller class that handles incoming API requests and interacts with the service layer.
 - **`--request, -r`**: Generates request classes for validation and data formatting during API interactions.
-- **`--resource, -res`**: Creates a resource class to facilitate data formatting for API responses.
 - **`--collection, -col`**: Generates a collection class that assists in transforming model collections into a standardized
   format for API responses.
 - **`--all`**: Creates all structure for working with the Repository.
