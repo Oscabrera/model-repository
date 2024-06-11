@@ -25,5 +25,24 @@ class BindingServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/binding-provider.php', 'binding-provider');
+        $this->bindInterfaces();
+    }
+
+    /**
+     * Binds interfaces to their implementations.
+     *
+     * @return void
+     */
+    private function bindInterfaces(): void
+    {
+        $bindings = config('binding-provider.interfaces');
+        if (!is_array($bindings)) {
+            return;
+        }
+        foreach ($bindings as $binding) {
+            if (isset($binding['interface'], $binding['implementation'])) {
+                $this->app->bind($binding['interface'], $binding['implementation']);
+            }
+        }
     }
 }
