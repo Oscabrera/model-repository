@@ -108,12 +108,12 @@ class DummyClass implements DummyInterface
     public function list(QueryFilters $options): LengthAwarePaginator
     {
         $this->fields = $this->model->getFields();
-        $query = $this->model->newQuery()->filtering($options);
+        $query = $this->model->newQuery()->applyFilters($options);
         $query = QueryBuilder::for($query);
         $query->allowedFilters($this->fields);
         $query->allowedSorts($this->fields);
         $query->allowedFields($this->fields);
 
-        return $query::jsonPaginate();
+        return $query->jsonPaginate();
     }
 }
