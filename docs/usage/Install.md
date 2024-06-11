@@ -52,10 +52,9 @@ DummyModel: Denotes the name of your model for which the API will be created.
 - **`--migration, -m`**: Creates a migration file to define the database schema for your model.
 - **`--factory, -f`**: Generates a factory class to generate dummy data for your model.
 - **`--service, -s`**: Generates a service class to encapsulate business logic related to your model operations.
-- **`--controller, -c`**: Creates a controller class that handles incoming API requests and interacts with the service layer.
+- **`--controller, -c`**: Creates a controller class that handles incoming API requests and interacts with the service
+  layer.
 - **`--request, -r`**: Generates request classes for validation and data formatting during API interactions.
-- **`--collection, -col`**: Generates a collection class that assists in transforming model collections into a standardized
-  format for API responses.
 - **`--all`**: Creates all structure for working with the Repository.
 - **`--force`**: Overwrites existing files if they already exist.
 

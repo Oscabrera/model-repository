@@ -59,6 +59,20 @@ export default {
                 ],
             },
             {
+                text: 'Interfaces',
+                items: [
+                    { text: 'Introduction', link: '/repository-interfaces/Introduction' },
+                    { text: 'IRepositoryResource', link: '/repository-interfaces/IRepositoryResource' },
+                    { text: 'ICreateModel', link: '/repository-interfaces/ICreateModel' },
+                    { text: 'IReadModel', link: '/repository-interfaces/IReadModel' },
+                    { text: 'IUpdateModel', link: '/repository-interfaces/IUpdateModel' },
+                    { text: 'IDeleteModel', link: '/repository-interfaces/IDeleteModel' },
+                    { text: 'IListModel', link: '/repository-interfaces/IListModel' },
+                    { text: 'IEntitySearch', link: '/repository-interfaces/IEntitySearch' },
+                    { text: 'IEntityCount', link: '/repository-interfaces/IEntityCount' },
+                ]
+            },
+            {
                 text: "Code Quality",
                 items: [
                     { text: "Ensuring Code Quality", link: "/code-quality/code-quality" }
