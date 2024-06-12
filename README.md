@@ -82,6 +82,20 @@ php artisan make:repository DummyModel --all
 
 3. Customize the generated code according to your needs.
 
+### In the Model:
+
+Is important use properties `$fillable` and `$hidden` in your model.
+
+in `$hidden` you have to add `id` in your model.
+
+```php
+protected $hidden = [
+        'id',
+    ];
+```
+
+In `$fillable` you should add all the properties you want to be returned by your model.
+
 4. Migrate the database:
 
 ```shell

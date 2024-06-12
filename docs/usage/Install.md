@@ -64,6 +64,18 @@ The generated code files provide a solid foundation for your API. However, you m
 further to tailor them to your specific project requirements. Review the generated code carefully and make modifications
 where necessary to fine-tune the API's behavior and functionality.
 
+### In the Model:
+
+Is important use properties `$fillable` and `$hidden` in your model.
+
+in `$hidden` you have to add `id` in your model.
+
+```php
+protected $hidden = [
+        'id',
+    ];
+```
+
 ## Database Migration
 
 3. Applying Database Schema Changes:
