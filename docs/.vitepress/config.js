@@ -25,7 +25,6 @@ export default {
                 items: [
                     { text: "Install", link: "/usage/Install" },
                     { text: "Folder Structure", link: "/usage/Folder" },
-                    { text: "Error 403", link: "/usage/Authorize" },
 
                 ],
             },

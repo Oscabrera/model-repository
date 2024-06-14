@@ -12,7 +12,7 @@ use Oscabrera\ModelRepository\Handlers\Makers\MakeInterfaceRepository;
 use Oscabrera\ModelRepository\Handlers\Makers\MakeInterfaceServices;
 use Oscabrera\ModelRepository\Handlers\Makers\MakeModel;
 use Oscabrera\ModelRepository\Handlers\Makers\MakeRepository;
-use Oscabrera\ModelRepository\Handlers\Makers\MakeSeeder;
+use Oscabrera\ModelRepository\Handlers\Makers\MakeRequest;
 use Oscabrera\ModelRepository\Handlers\Makers\MakeService;
 
 class MainCommand
@@ -45,7 +45,7 @@ class MainCommand
      * @param MakeService $makeService The MakeService instance.
      * @param MakeInterfaceServices $makeInterfaceServices The MakeInterface instance.
      * @param MakeController $makeController The MakeController instance.
-     * @param MakeSeeder $makeSeeder The MakeSeeder instance.
+     * @param MakeRequest $makeRequest The MakeRequest instance.
      */
     public function __construct(
         protected MakeModel $makeModel,
@@ -54,7 +54,7 @@ class MainCommand
         protected MakeService $makeService,
         protected MakeInterfaceServices $makeInterfaceServices,
         protected MakeController $makeController,
-        protected MakeSeeder $makeSeeder,
+        protected MakeRequest $makeRequest
     ) {
     }
 
@@ -260,12 +260,14 @@ class MainCommand
         if (!$this->options->hasRequest) {
             return;
         }
-        $this->command->call(
-            'make:request',
-            [
-                'name' => "{$this->name}\\{$this->name}Request",
-                '--force' => $this->options->force
-            ]
-        );
+        try {
+            $result = $this->makeRequest->make($this->name, $this->options);
+        } catch (StubException|CreateStructureException $exception) {
+            $info = $exception->getInput();
+            /** @var array{type: string, path: string} $info */
+            $this->errorCommand($exception->getMessage(), $info);
+            return;
+        }
+        $this->infoCommand($result);
     }
 }
