@@ -91,10 +91,6 @@ php artisan migrate
 This command processes the generated migration file, instructing your database to create the tables required for your
 model's data.
 
-::: tip
-Change the permissions of the Request more information [here](./Authorize)
-:::
-
 ## Running the API
 
 4. Ready for Action!
