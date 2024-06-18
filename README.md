@@ -1,8 +1,9 @@
 # Laravel Model Repository Generator
 
+[![built with Codeium](https://codeium.com/badges/main)](https://codeium.com)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/oscabrera/model-repository.svg?style=flat-square)](https://packagist.org/packages/oscabrera/model-repository)
 [![Total Downloads](https://img.shields.io/packagist/dt/oscabrera/model-repository.svg?style=flat-square)](https://packagist.org/packages/oscabrera/model-repository)
-[![built with Codeium](https://codeium.com/badges/main)](https://codeium.com)
+[![VitePress](https://github.com/oscabrera/model-repository/actions/workflows/deploy.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/deploy.yml)
 
 ![model-repository](https://socialify.git.ci/Oscabrera/model-repository/image?language=1&name=1&owner=1&pattern=Floating%20Cogs&theme=Auto)
 
