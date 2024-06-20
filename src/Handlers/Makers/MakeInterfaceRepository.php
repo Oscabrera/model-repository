@@ -50,6 +50,6 @@ class MakeInterfaceRepository extends MakeStructure
         $directory = app_path("Contracts/Repositories/$name");
         $path = $this->getFilePath($directory, 'I' . $name, 'Repository');
 
-        return $this->createFromClassStub($path, $replace, $this->type, $options->force);
+        return $this->createFromClassStub($path, $replace, $this->type, $options);
     }
 }

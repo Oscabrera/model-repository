@@ -189,7 +189,7 @@ This project provides a complete implementation of a model repository using the 
 
 ### keywords:
 
-> VitePress, Documentation, Markdown, Vite, Tutorials, API, GitHub Pages
+> Laravel, RESTful API, Repository Patter, CRUD,  API, Repositories, Services, File generation
  
 ## **Additional resources:**
 

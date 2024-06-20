@@ -54,7 +54,7 @@ class MakeService extends MakeStructure
         $directory = app_path("Services/$name");
         $path = $this->getFilePath($directory, $name, $this->type);
 
-        return $this->createFromClassStub($path, $replace, $this->type, $options->force);
+        return $this->createFromClassStub($path, $replace, $this->type, $options);
     }
 
     /**
