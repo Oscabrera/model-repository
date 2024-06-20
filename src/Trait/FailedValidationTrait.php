@@ -27,12 +27,12 @@ trait FailedValidationTrait
                 'field' => $field,
                 'title' => 'Failed request validation',
                 "message" => 'Invalid data',
-                "detail" => $validator->errors()->all()
+                "detail" => $message
             ];
         }
 
-        response()->json([
-            'errors' => $formattedErrors,
-        ], Response::HTTP_UNPROCESSABLE_ENTITY)->send();
+        throw new HttpResponseException(
+            response()->json(['errors' => $formattedErrors], Response::HTTP_UNPROCESSABLE_ENTITY)
+        );
     }
 }

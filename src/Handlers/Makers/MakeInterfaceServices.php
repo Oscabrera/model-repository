@@ -50,6 +50,6 @@ class MakeInterfaceServices extends MakeStructure
         $directory = app_path("Contracts/Services/$name");
         $path = $this->getFilePath($directory, 'I' . $name, 'Service');
 
-        return $this->createFromClassStub($path, $replace, $this->type, $options->force);
+        return $this->createFromClassStub($path, $replace, $this->type, $options);
     }
 }

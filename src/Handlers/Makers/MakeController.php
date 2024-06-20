@@ -52,6 +52,6 @@ class MakeController extends MakeStructure
         $directory = app_path("Http/Controllers/$name");
         $path = $this->getFilePath($directory, $name, $this->type);
 
-        return $this->createFromClassStub($path, $replace, $this->type, $options->force);
+        return $this->createFromClassStub($path, $replace, $this->type, $options);
     }
 }

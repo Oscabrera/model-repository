@@ -3,6 +3,7 @@
 namespace Oscabrera\ModelRepository\Handlers\Makers;
 
 use Illuminate\Support\Facades\File;
+use Oscabrera\ModelRepository\Classes\Options;
 use Oscabrera\ModelRepository\Exception\Command\CreateStructureException;
 use Oscabrera\ModelRepository\Exception\Command\StubException;
 use Oscabrera\ModelRepository\Handlers\BindingServices;
@@ -30,7 +31,7 @@ class MakeStructure
      * @param string $classPath
      * @param array<string, string> $replacements
      * @param string $type
-     * @param bool $force Determines if the class should be overwritten if it already exists.
+     * @param Options $options
      * @return array{type: string, path: string}
      * @throws StubException|CreateStructureException
      */
@@ -38,12 +39,9 @@ class MakeStructure
         string $classPath,
         array $replacements,
         string $type,
-        bool $force = false
+        Options $options
     ): array {
-        if ($this->file::exists($classPath) && !$force) {
-            throw new CreateStructureException('already exists', $type, $classPath);
-        }
-
+        $this->validateClassExists($classPath, $type, $options);
         $contentStub = $this->getStubContent($type);
         $classContent = str_replace(
             array_keys($replacements),
@@ -52,6 +50,22 @@ class MakeStructure
         );
         file_put_contents($classPath, $classContent);
         return ['type' => $type, 'path' => $classPath];
+    }
+
+    /**
+     * Validate if the class exists.
+     *
+     * @param string $classPath The file path of the class.
+     * @param string $type The type of the class (e.g., interface, service).
+     * @param Options $options The options for creating the class.
+     * @return void
+     * @throws CreateStructureException If the class already exists and force option is false.
+     */
+    protected function validateClassExists(string $classPath, string $type, Options $options): void
+    {
+        if ($this->file::exists($classPath) && !$options->force) {
+            throw new CreateStructureException('already exists', $type, $classPath);
+        }
     }
 
     /**
