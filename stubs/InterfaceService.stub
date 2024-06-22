@@ -6,7 +6,6 @@ use App\Http\Requests\DummyModel\DummyModelRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Oscabrera\JsonApiFormatPaginate\Transformers\EntityResourceTransformer;
 use Oscabrera\JsonApiFormatPaginate\Transformers\JsonApiPaginationTransformer;
-use Oscabrera\ModelRepository\Exception\ModelCreateException;
 
 interface DummyClass
 {
@@ -16,8 +15,6 @@ interface DummyClass
      * @param DummyModelRequest $request The request object containing the data for creating a spec.
      *
      * @return EntityResourceTransformer Returns the newly created DummyModelResource if successful, or null if the spec creation failed.
-     *
-     * @throws ModelCreateException
      */
     public function create(DummyModelRequest $request): EntityResourceTransformer;
 

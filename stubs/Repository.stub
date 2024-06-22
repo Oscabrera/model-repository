@@ -7,7 +7,6 @@ use App\Models\DummyModel\DummyModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Oscabrera\ModelRepository\Exception\ModelCreateException;
 use Oscabrera\QueryFilters\Utilities\QueryFilters;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -41,15 +40,11 @@ class DummyClass implements DummyInterface
      *  The object to be created.
      *
      * @return DummyModel The created object.
-     *
-     * @throws ModelCreateException
      */
     public function create(array $entity): DummyModel
     {
         $created = $this->model->newQuery()->create($entity);
-        if (!$created) {
-            throw new ModelCreateException(class_basename($this->model), $entity);
-        }
+
         /** @var DummyModel $created */
         return $created;
     }
