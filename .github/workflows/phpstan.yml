@@ -7,20 +7,26 @@ name: PHPStan
 on:
   push:
     branches:
-      - Feature/*
+      - 'Feature/*'
 
 jobs:
   phpstan:
     runs-on: ubuntu-24.04
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3 # Puedes ajustar la versión de PHP según tus necesidades
+          php-version: 8.3
+          tools: composer
 
       - name: Install dependencies
         run: composer install

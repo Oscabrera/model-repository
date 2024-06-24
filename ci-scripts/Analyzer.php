@@ -118,7 +118,7 @@ class Analyzer
      */
     private function getDiffBranch(): string
     {
-        $gitLog = shell_exec('git diff --name-only ' . self::BRANCH . ' 2>/dev/null');
+        $gitLog = shell_exec('git diff --name-only ' . self::BRANCH . ' 2>&1');
         if ($gitLog === null) {
             throw new RuntimeException('git log command failed');
         }
