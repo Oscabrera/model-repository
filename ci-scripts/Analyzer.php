@@ -15,7 +15,7 @@ class Analyzer
      *
      * @var string
      */
-    public const BRANCH = 'HEAD^';
+    public const BRANCH = 'origin/develop';
 
     /**
      * @var array<int, string>
