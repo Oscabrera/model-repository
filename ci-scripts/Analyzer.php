@@ -61,18 +61,18 @@ class Analyzer
             $modifiedFiles = $this->getFiles();
             if (empty($modifiedFiles)) {
                 $this->echoColor('No PHP files modified', self::BLUE_COLOR, self::NO_FILES_ICON);
-                return false;
+                return true;
             }
             if (!$this->executePhpStan($modifiedFiles)) {
                 $this->echoColor('PHPStan analysis failed', self::RED_COLOR, self::CRITICAL_ERROR_ICON);
-                return true;
+                return false;
             }
 
             $this->echoColor('PHPStan analysis succeeded', self::BLUE_COLOR, self::SUCCESS_ICON);
-            return false;
+            return true;
         } catch (RuntimeException|Exception $e) {
             $this->echoColor($e->getMessage(), self::RED_COLOR, self::EXCEPTION_ICON);
-            return true;
+            return false;
         }
     }
 
