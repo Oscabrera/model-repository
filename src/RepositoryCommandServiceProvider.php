@@ -4,6 +4,8 @@ namespace Oscabrera\ModelRepository;
 
 use Illuminate\Support\ServiceProvider;
 use Oscabrera\ModelRepository\Commands\Handlers;
+use Illuminate\Foundation\Application as LaravelApplication;
+
 
 class RepositoryCommandServiceProvider extends ServiceProvider
 {
@@ -19,7 +21,7 @@ class RepositoryCommandServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if ($this->app->runningInConsole() && $this->app->isLocal()) {
+        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole() && $this->app->isLocal()) {
             $this->commands([
                 Handlers::class,
             ]);

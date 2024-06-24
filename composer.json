@@ -13,7 +13,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Oscabrera\\ModelRepository\\": "src/"
+            "Oscabrera\\ModelRepository\\": "src/",
+            "Oscabrera\\ModelRepository\\CIScripts\\": "ci-scripts/"
         }
     },
     "require": {
@@ -39,5 +40,11 @@
         "Artisan command",
         "structure",
         "package"
-    ]
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^1.11"
+    },
+    "scripts": {
+        "phpstan": "php ci-scripts/phpStan/run.php"
+    }
 }

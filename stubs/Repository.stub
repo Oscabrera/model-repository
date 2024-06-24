@@ -98,7 +98,7 @@ class DummyClass implements DummyInterface
     *
     * An array of conditions to filter the records (default: []).
     *
-    * @return LengthAwarePaginator  An array of records that match the conditions.
+    * @return LengthAwarePaginator<Level>  An array of records that match the conditions.
     */
     public function list(QueryFilters $options): LengthAwarePaginator
     {
