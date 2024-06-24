@@ -41,6 +41,7 @@ class Handlers extends Command
     {
         $name = $this->argument('name');
         $mainCommand->setOutput($this->components);
+        /** @var string $name */
         $mainCommand->handle($this, $name, new Options());
     }
 }

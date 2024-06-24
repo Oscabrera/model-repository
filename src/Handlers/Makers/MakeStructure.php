@@ -7,16 +7,16 @@ use Oscabrera\ModelRepository\Classes\Options;
 use Oscabrera\ModelRepository\Exception\Command\CreateStructureException;
 use Oscabrera\ModelRepository\Exception\Command\StubException;
 use Oscabrera\ModelRepository\Handlers\BindingServices;
-use Str;
+use Illuminate\Support\Str;
 
 class MakeStructure
 {
     /**
-     * Initializes a new instance of the class.
+     * Class constructor.
      *
-     * @param File $file The file object to be used by the constructor.
-     *
-     * @return void
+     * @param File $file The instance of the File class.
+     * @param BindingServices $bindingServices The instance of the BindingServices class.
+     * @param Str $str The instance of the Str class.
      */
     public function __construct(
         protected File $file,
