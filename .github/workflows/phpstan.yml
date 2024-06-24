@@ -5,9 +5,9 @@
 name: PHPStan
 
 on:
-  pull_request:
+  push:
     branches:
-      - develop
+      - Feature/*
 
 jobs:
   phpstan:
