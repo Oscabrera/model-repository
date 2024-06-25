@@ -1,12 +1,12 @@
 <?php
 
-namespace Oscabrera\ModelRepository\CIScripts\phpStan;
+namespace Oscabrera\ModelRepository\CIScripts\Pint;
 
 require_once __DIR__ . '/../Analyzer/Analyzer.php';
 
 use Oscabrera\ModelRepository\CIScripts\Analyzer\Analyzer;
 
-class PhpStanAnalyzer extends Analyzer
+class PintAnalyzer extends Analyzer
 {
     /**
      * @param array<int, string> $args
@@ -15,7 +15,8 @@ class PhpStanAnalyzer extends Analyzer
     public function __construct(array $args)
     {
         $this->setArgs($args);
-        $this->setCommand('./vendor/bin/phpstan analyse --memory-limit=1G -c ci-scripts/phpStan/phpstan.neon --ansi');
+        $this->setTool('Pint');
+        $this->setCommand('./vendor/bin/pint --test --config ci-scripts/Pint/pint.json --ansi');
         parent::__construct();
     }
 }

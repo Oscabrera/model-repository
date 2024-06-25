@@ -42,9 +42,11 @@
         "package"
     ],
     "require-dev": {
-        "phpstan/phpstan": "^1.11"
+        "phpstan/phpstan": "^1.11",
+        "laravel/pint": "^1.16"
     },
     "scripts": {
-        "phpstan": "php ci-scripts/phpStan/run.php"
+        "phpstan": "php ci-scripts/phpStan/run.php",
+        "pint": "php ci-scripts/Pint/run.php"
     }
 }

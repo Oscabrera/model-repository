@@ -6,7 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use Oscabrera\ModelRepository\Commands\Handlers;
 use Illuminate\Foundation\Application as LaravelApplication;
 
-
+/**
+ * Service provider for registering repository commands
+ */
 class RepositoryCommandServiceProvider extends ServiceProvider
 {
     public function boot(): void
