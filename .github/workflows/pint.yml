@@ -40,4 +40,4 @@ jobs:
         run: composer install
 
       - name: Run PHPStan
-        run: composer phpstan
+        run: composer pint
