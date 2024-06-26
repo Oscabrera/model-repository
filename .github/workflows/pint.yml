@@ -1,8 +1,5 @@
-# Sample workflow for validating and linting PHP code with PHPStan
-#
-# See https://github.com/phpstan/phpstan
-#
-name: PHPStan
+# Sample workflow for validating and linting PHP code with Laravel Pint
+name: Pint
 
 on:
   push:
@@ -40,4 +37,4 @@ jobs:
         run: composer install
 
       - name: Run PHPStan
-        run: composer phpstan
+        run: composer pint
