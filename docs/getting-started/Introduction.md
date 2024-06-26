@@ -8,6 +8,8 @@
 
 [![Pint](https://github.com/oscabrera/model-repository/actions/workflows/pint.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/pint.yml)
 
+[![PHPMD](https://github.com/oscabrera/model-repository/actions/workflows/phpmd.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/phpmd.yml)
+
 ![model-repository](https://socialify.git.ci/Oscabrera/model-repository/image?language=1&name=1&owner=1&pattern=Floating%20Cogs&theme=Auto)
 
 This package for Laravel greatly simplifies the process of creating a complete RESTful API for any model in your

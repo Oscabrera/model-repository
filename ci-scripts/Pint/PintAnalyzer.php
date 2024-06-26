@@ -16,7 +16,7 @@ class PintAnalyzer extends Analyzer
     {
         $this->setArgs($args);
         $this->setTool('Pint');
-        $this->setCommand('./vendor/bin/pint --test --config ci-scripts/Pint/pint.json --ansi');
+        $this->setCommand('./vendor/bin/pint --test --config ci-scripts/Pint/pint.json --ansi %FILES%');
         parent::__construct();
     }
 }

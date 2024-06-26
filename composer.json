@@ -43,10 +43,12 @@
     ],
     "require-dev": {
         "phpstan/phpstan": "^1.11",
-        "laravel/pint": "^1.16"
+        "laravel/pint": "^1.16",
+        "phpmd/phpmd": "^2.15"
     },
     "scripts": {
         "phpstan": "php ci-scripts/phpStan/run.php",
-        "pint": "php ci-scripts/Pint/run.php"
+        "pint": "php ci-scripts/Pint/run.php",
+        "phpmd": "php ci-scripts/phpMD/run.php"
     }
 }
