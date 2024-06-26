@@ -6,6 +6,7 @@
 [![VitePress](https://github.com/oscabrera/model-repository/actions/workflows/deploy.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/deploy.yml)
 [![PHPStan](https://github.com/oscabrera/model-repository/actions/workflows/phpstan.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/phpstan.yml)
 [![Pint](https://github.com/oscabrera/model-repository/actions/workflows/pint.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/pint.yml)
+[![PHPMD](https://github.com/oscabrera/model-repository/actions/workflows/phpmd.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/phpmd.yml)
 
 [![built with Codeium](https://codeium.com/badges/main)](https://codeium.com)
 

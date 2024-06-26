@@ -177,13 +177,13 @@ class Analyzer extends AnalyzerSettings
     {
         $additionalArgs = $this->getAdditionalArgs();
         $this->echoColor(
-            "$this->command $modifiedFiles " . implode(' ', $additionalArgs),
+            str_replace('%FILES%', $modifiedFiles, $this->command) . implode(' ', $additionalArgs),
             $this->color::get('GREEN'),
             $this->icon::get('COMMAND')
         );
-        $command = "$this->command $modifiedFiles " . implode(' ', $additionalArgs);
-        passthru($command, $return_var);
-        return $return_var === 0;
+        $command = str_replace('%FILES%', $modifiedFiles, $this->command). ' ' . implode(' ', $additionalArgs);
+        passthru($command, $returnVar);
+        return $returnVar === 0;
     }
 
     /**

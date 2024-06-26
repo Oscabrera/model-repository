@@ -15,7 +15,7 @@ class PhpStanAnalyzer extends Analyzer
     public function __construct(array $args)
     {
         $this->setArgs($args);
-        $this->setCommand('./vendor/bin/phpstan analyse --memory-limit=1G -c ci-scripts/phpStan/phpstan.neon --ansi');
+        $this->setCommand('./vendor/bin/phpstan analyse --memory-limit=1G -c ci-scripts/phpStan/phpstan.neon --ansi %FILES%');
         parent::__construct();
     }
 }
