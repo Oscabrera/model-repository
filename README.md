@@ -2,8 +2,11 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/oscabrera/model-repository.svg?style=flat-square)](https://packagist.org/packages/oscabrera/model-repository)
 [![Total Downloads](https://img.shields.io/packagist/dt/oscabrera/model-repository.svg?style=flat-square)](https://packagist.org/packages/oscabrera/model-repository)
+
 [![VitePress](https://github.com/oscabrera/model-repository/actions/workflows/deploy.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/deploy.yml)
 [![PHPStan](https://github.com/oscabrera/model-repository/actions/workflows/phpstan.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/phpstan.yml)
+[![Pint](https://github.com/oscabrera/model-repository/actions/workflows/pint.yml/badge.svg)](https://github.com/oscabrera/model-repository/actions/workflows/pint.yml)
+
 [![built with Codeium](https://codeium.com/badges/main)](https://codeium.com)
 
 
