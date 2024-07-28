@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository\Classes;
 
 /**
@@ -9,57 +11,83 @@ namespace Oscabrera\ModelRepository\Classes;
  */
 class Options
 {
-    /**
-     * @var bool $hasMigration Flag indicating whether a migration is being performed or not.
-     */
-    public bool $hasMigration = false;
+    public function __construct(
+        protected bool $seeder,
+        protected bool $migration,
+        protected bool $factory,
+        protected bool $service,
+        protected bool $controller,
+        protected bool $request,
+        protected bool $force,
+    ) {
+    }
 
     /**
-     * @var bool $hasFactory Indicates if the factory would be to created
+     * Determines if the seeder should be created.
      */
-    public bool $hasFactory = false;
+    public function hasSeeder(): bool
+    {
+        return $this->seeder;
+    }
 
     /**
-     * @var bool $hasController Indicates if the controller would be to created
+     * Determines if the migration should be created.
      */
-    public bool $hasController = false;
+    public function hasMigration(): bool
+    {
+        return $this->migration;
+    }
 
     /**
-     * @var bool $hasRequest Indicates if the request would be to created
+     * Determines if the factory should be created.
      */
-    public bool $hasRequest = false;
+    public function hasFactory(): bool
+    {
+        return $this->factory;
+    }
 
     /**
-     * @var bool $hasService Indicates if the service would be to created
+     * Determines if the service should be created.
      */
-    public bool $hasService = false;
+    public function hasService(): bool
+    {
+        return $this->service;
+    }
 
     /**
-     * @var bool $hasSeeder Indicates if the seeder would be to created
+     * Determines if the controller should be created.
      */
-    public bool $hasSeeder = false;
+    public function hasController(): bool
+    {
+        return $this->controller;
+    }
 
     /**
-     * @var bool $force Indicates if the command should be forced
+     * Determines if the request should be created.
      */
-    public bool $force = false;
+    public function hasRequest(): bool
+    {
+        return $this->request;
+    }
+
+    /**
+     * Determines if the operation should be forced.
+     */
+    public function isForce(): bool
+    {
+        return $this->force;
+    }
 
     /**
      * Set all force options to true if $all is true.
-     *
-     * @param bool $all Whether to force all options or not.
-     * @return void
      */
-    public function forceAll(bool $all): void
+    public function forceAll(): void
     {
-        if (!$all) {
-            return;
-        }
-        $this->hasMigration = true;
-        $this->hasController = true;
-        $this->hasRequest = true;
-        $this->hasService = true;
-        $this->hasSeeder = true;
-        $this->hasFactory = true;
+        $this->seeder = true;
+        $this->migration = true;
+        $this->factory = true;
+        $this->service = true;
+        $this->controller = true;
+        $this->request = true;
     }
 }

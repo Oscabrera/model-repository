@@ -19,10 +19,6 @@ interface IDeleteModel
 {
     /**
      * Deletes a record from the database based on the given ID.
-     *
-     * @param Model $entity
-     *
-     * @return bool True if the record is successfully deleted, false otherwise.
      */
     public function delete(Model $entity): bool;
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository\Trait;
 
 use Illuminate\Contracts\Validation\Validator;
@@ -11,28 +13,25 @@ trait FailedValidationTrait
 {
     /**
      * Handle a failed validation attempt.
-     *
-     * @param Validator $validator
-     * @return void
-     *
-     * @throws HttpResponseException
      */
     protected function failedValidation(Validator $validator): void
     {
         $errors = (new ValidationException($validator))->errors();
-
         $formattedErrors = [];
         foreach ($errors as $field => $message) {
             $formattedErrors[] = [
                 'field' => $field,
                 'title' => 'Failed request validation',
-                "message" => 'Invalid data',
-                "detail" => $message
+                'message' => 'Invalid data',
+                'detail' => $message,
             ];
         }
 
         throw new HttpResponseException(
-            response()->json(['errors' => $formattedErrors], Response::HTTP_UNPROCESSABLE_ENTITY)
+            response()->json(
+                ['errors' => $formattedErrors],
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            )
         );
     }
 }

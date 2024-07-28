@@ -56,8 +56,6 @@ interface DummyClass
      * List all DummyModel resources.
      *
      * @return JsonApiPaginationTransformer
-     *
-     * @throws ModelNotFoundException
      */
     public function list(): JsonApiPaginationTransformer;
 }

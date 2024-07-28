@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\ModelRepository\CIScripts\Pint;
+namespace Oscabrera\ModelRepository\CIScripts\PhpStan;
 
 use Oscabrera\ModelRepository\CIScripts\Analyzer\Analyzer;
 
-class PintAnalyzer extends Analyzer
+class PhpStanAnalyzer extends Analyzer
 {
     /**
      * @param array<int, string> $args
@@ -15,10 +15,11 @@ class PintAnalyzer extends Analyzer
     public function __construct(array $args)
     {
         parent::__construct(
-            'Pint',
+            'PHPStan',
             <<<CMD
-            ./vendor/bin/pint --test --config \\
-            ci-scripts/Pint/pint.json \\
+            ./vendor/bin/phpstan analyse \\
+            --memory-limit=1G \\
+            -c ci-scripts/PhpStan/phpstan.neon \\
             --ansi %FILES%
             CMD,
             $args

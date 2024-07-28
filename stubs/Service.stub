@@ -35,9 +35,12 @@ class DummyClass implements DummyInterface
      * @return EntityResourceTransformer Returns the newly created UserResource if successful,
      * or null if the User creation failed.
      */
-    public function create(DummyModelRequest $request): EntityResourceTransformer
-    {
-        return new EntityResourceTransformer($this->repository->create($request->all()));
+    public function create(
+        DummyModelRequest $request
+    ): EntityResourceTransformer {
+        return new EntityResourceTransformer(
+            $this->repository->create($request->all())
+        );
     }
 
     /**
@@ -62,7 +65,10 @@ class DummyClass implements DummyInterface
      */
     public function update(string $id, DummyModelRequest $request): bool
     {
-        return $this->repository->update($this->repository->read($id), $request->all());
+        return $this->repository->update(
+            $this->repository->read($id),
+            $request->all()
+        );
     }
 
     /**
@@ -85,6 +91,8 @@ class DummyClass implements DummyInterface
     public function list(): JsonApiPaginationTransformer
     {
         $options = new QueryFilters();
-        return new JsonApiPaginationTransformer($this->repository->list($options));
+        return new JsonApiPaginationTransformer(
+            $this->repository->list($options)
+        );
     }
 }

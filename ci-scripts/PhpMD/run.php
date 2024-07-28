@@ -6,6 +6,6 @@ namespace Oscabrera\ModelRepository\CIScripts;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Oscabrera\ModelRepository\CIScripts\Pint\PintAnalyzer as Analyzer;
+use Oscabrera\ModelRepository\CIScripts\PhpMD\PhpMDAnalyzer as Analyzer;
 
 exit((new Analyzer(array_slice($_SERVER['argv'], 1)))->analyze() ? 0 : 1);

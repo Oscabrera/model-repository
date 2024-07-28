@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository;
 
+use Illuminate\Foundation\Application as LaravelApplication;
 use Illuminate\Support\ServiceProvider;
 use Oscabrera\ModelRepository\Commands\Handlers;
-use Illuminate\Foundation\Application as LaravelApplication;
 
 /**
  * Service provider for registering repository commands
@@ -15,15 +17,12 @@ class RepositoryCommandServiceProvider extends ServiceProvider
     {
     }
 
-    /**
-     * Registers the necessary commands for the application.
-     * Only registers the command if the application is running in the console and is in the local environment.
-     *
-     * @return void
-     */
     public function register(): void
     {
-        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole() && $this->app->isLocal()) {
+        if (
+            $this->app instanceof LaravelApplication
+            && $this->app->runningInConsole() && $this->app->isLocal()
+        ) {
             $this->commands([
                 Handlers::class,
             ]);

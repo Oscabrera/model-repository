@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository\Exception\Command;
 
 use Oscabrera\ModelRepository\Exception\CustomException;
@@ -15,10 +17,6 @@ class CreateStructureException extends CustomException
 {
     /**
      * Constructor method for Error class
-     *
-     * @param string $message The error message
-     * @param string $type The type of error
-     * @param string $path The path where the error occurred
      */
     public function __construct(string $message, string $type, string $path)
     {

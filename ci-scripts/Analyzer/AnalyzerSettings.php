@@ -1,6 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository\CIScripts\Analyzer;
+
+use Exception;
+use Oscabrera\ModelRepository\CIScripts\Analyzer\Constants\Color;
+use Oscabrera\ModelRepository\CIScripts\Analyzer\Constants\Icon;
+use RuntimeException;
 
 /**
  * Class AnalyzerSettings
@@ -9,85 +16,123 @@ namespace Oscabrera\ModelRepository\CIScripts\Analyzer;
  */
 class AnalyzerSettings
 {
+    protected Color $color;
+    protected Icon $icon;
+    protected FileHandler $fileHandler;
+    protected CommandBuilder $commandBuilder;
+    protected ArgumentHandler $argumentHandler;
+
     /**
-     * Define the branch to analyze
+     * Constructor.
      *
-     * @var string
+     * @param array<int, string> $args The arguments. Defaults to an empty array.
      */
-    protected string $branch = 'origin/develop';
-
-    /**
-     * @var array<int, string>
-     */
-    protected array $args;
-
-    /**
-     * @var string
-     */
-    protected string $extension = 'php';
-
-    /**
-     * @var string
-     */
-    protected string $tool = 'PHPStan';
-
-    /**
-     * @var string
-     */
-    protected string $command;
-
-    /**
-     * Set the branch for the application.
-     *
-     * @param string $branch The branch name to set.
-     * @return void
-     */
-    public function setBranch(string $branch): void
-    {
-        $this->branch = $branch;
+    public function __construct(
+        protected string $tool,
+        protected string $command,
+        protected array $args = [],
+        protected string $extension = 'php',
+        protected string $branch = 'origin/develop',
+    ) {
+        $this->color = new Color();
+        $this->icon = new Icon();
+        $this->fileHandler = new FileHandler($extension, $branch);
+        $this->commandBuilder = new CommandBuilder($command, $args);
+        $this->argumentHandler = new ArgumentHandler($args);
     }
 
     /**
-     * Sets the arguments.
-     *
-     * @param array<int, string> $args The array of arguments.
-     * @return void
+     * Echoes a colored message to the console.
      */
-    public function setArgs(array $args): void
-    {
-        $this->args = $args;
+    protected function echoColor(
+        string $message,
+        string $color,
+        string $icon = ''
+    ): void {
+        echo "\n";
+        echo $icon . $color . '  ' . $message . $this->color::get('END');
+        echo "\n";
+        echo "\n";
     }
 
     /**
-     * Set the extension for the given file.
-     *
-     * @param string $extension The extension to be set.
-     * @return void
+     * Report that no files were modified to analyze
      */
-    public function setExtension(string $extension): void
+    protected function reportNoFilesAnalyze(): void
     {
-        $this->extension = $extension;
+        $this->echoColor(
+            'No files modified to analyze',
+            $this->color::get('BLUE'),
+            $this->icon::get('NO_FILES')
+        );
     }
 
     /**
-     * Set the tool for the application.
-     *
-     * @param string $tool The tool to set.
-     * @return void
+     * Report that the analysis failed
      */
-    public function setTool(string $tool): void
+    protected function reportAnalysisFailed(): void
     {
-        $this->tool = $tool;
+        $this->echoColor(
+            "{$this->tool} analysis succeeded",
+            $this->color::get('BLUE'),
+            $this->icon::get('SUCCESS')
+        );
     }
 
     /**
-     * Set the command.
-     *
-     * @param string $command The command to set.
-     * @return void
+     * Report that the analysis succeeded
      */
-    public function setCommand(string $command): void
+    protected function reportAnalysisSucceeded(): void
     {
-        $this->command = $command;
+        $this->successMessage("{$this->tool} analysis succeeded");
+    }
+
+    /**
+     * Report that the analysis succeeded
+     */
+    protected function successMessage(string $message, string $icon = ''): void
+    {
+        $this->echoColor(
+            $message,
+            $this->color::get('GREEN'),
+            $icon === '' ? $this->icon::get('SUCCESS') : $icon
+        );
+    }
+
+    /**
+     * Report that Exception was thrown
+     */
+    protected function reportExceptionThrown(
+        RuntimeException|Exception $exception
+    ): void {
+        $this->echoColor(
+            $exception->getMessage(),
+            $this->color::get('RED'),
+            $this->icon::get('EXCEPTION')
+        );
+    }
+
+    /**
+     * Report analysis execute
+     */
+    protected function reportAnalysisExecute(string $file): void
+    {
+        $this->echoColor(
+            'Executing analysis on ' . $file,
+            $this->color::get('YELLOW'),
+            $this->icon::get('STACK_TRACE')
+        );
+    }
+
+    /**
+     * Echo the analyzer all message.
+     */
+    protected function echoAnalyzeAll(): void
+    {
+        $this->echoColor(
+            'Executing analysis on .',
+            $this->color::get('YELLOW'),
+            $this->icon::get('STACK_TRACE')
+        );
     }
 }
