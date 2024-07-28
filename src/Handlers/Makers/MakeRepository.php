@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oscabrera\ModelRepository\Handlers\Makers;
 
 use Oscabrera\ModelRepository\Classes\Options;
+use Oscabrera\ModelRepository\Contracts\BindingInterface;
 use Oscabrera\ModelRepository\Exception\Command\CreateStructureException;
 use Oscabrera\ModelRepository\Exception\Command\StubException;
 
@@ -15,7 +16,7 @@ use Oscabrera\ModelRepository\Exception\Command\StubException;
  *  associated migration file
  * using the Laravel Artisan command 'make:model'.
  */
-class MakeRepository extends MakeStructure
+class MakeRepository extends MakeStructure implements BindingInterface
 {
     private string $type = 'Repository';
     private string $repositoryNameSpace = 'App\Repositories';

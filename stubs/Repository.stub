@@ -25,6 +25,8 @@ class DummyClass implements DummyInterface
 
     /**
      * Class Constructor.
+     *
+     * @param DummyModel $model The model object to be injected.
      */
     public function __construct(
         protected DummyModel $model
@@ -36,6 +38,8 @@ class DummyClass implements DummyInterface
      *
      * @param array<string, mixed> $entity
      *  The object to be created.
+     *
+     * @return DummyModel The created object.
      */
     public function create(array $entity): DummyModel
     {
@@ -47,6 +51,10 @@ class DummyClass implements DummyInterface
 
     /**
      * Retrieves a record from the model by the given ID.
+     *
+     * @param string $id The ID of the record to retrieve.
+     *
+     * @return DummyModel The retrieved record.
      *
      * @throws ModelNotFoundException
      */
@@ -61,7 +69,11 @@ class DummyClass implements DummyInterface
     /**
      * Updates the given record in the database.
      *
+     * @param DummyModel $entity The record to be updated.
+     *
      * @param array<string, mixed> $dataEntity
+     *
+     * @return bool  True if the record was successfully updated, false otherwise.
      */
     public function update(Model $entity, array $dataEntity): bool
     {
@@ -70,6 +82,10 @@ class DummyClass implements DummyInterface
 
     /**
      * Deletes a record from the database based on the given ID.
+     *
+     * @param DummyModel $entity
+     *
+     * @return bool True if the record is successfully deleted, false otherwise.
      */
     public function delete(Model $entity): bool
     {
@@ -77,8 +93,13 @@ class DummyClass implements DummyInterface
     }
 
     /**
-     * Lists records from the database based on the given conditions.
-     */
+    * Lists records from the database based on the given conditions.
+    * @param QueryFilters $options
+    *
+    * An array of conditions to filter the records (default: []).
+    *
+    * @return LengthAwarePaginator  An array of records that match the conditions.
+    */
     public function list(QueryFilters $options): LengthAwarePaginator
     {
         $this->fields = $this->model->getFields();
