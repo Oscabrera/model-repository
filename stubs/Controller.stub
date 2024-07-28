@@ -25,8 +25,6 @@ class DummyClass extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return JsonResponse
      */
     #[Get(uri: 'ModelUri', name: 'ModelUri.list')]
     public function list(): JsonResponse
@@ -36,10 +34,6 @@ class DummyClass extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @param DummyModelRequest $request
-     *
-     * @return JsonResponse
      */
     #[Post(uri: 'ModelUri', name: 'ModelUri.create')]
     public function create(DummyModelRequest $request): JsonResponse
@@ -50,10 +44,6 @@ class DummyClass extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param string $id
-     *
-     * @return JsonResponse
      */
     #[Get(uri: 'ModelUri/{id}', name: 'ModelUri.read')]
     public function read(string $id): JsonResponse
@@ -70,11 +60,6 @@ class DummyClass extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param DummyModelRequest $request
-     * @param string $id
-     *
-     * @return JsonResponse
      */
     #[Put(uri: 'ModelUri/{id}', name: 'ModelUri.update')]
     public function update(DummyModelRequest $request, string $id): JsonResponse
@@ -91,9 +76,6 @@ class DummyClass extends Controller
 
     /**
      * Remove the specified resource from storage.
-     * @param string $id
-     *
-     * @return JsonResponse
      */
     #[Delete(uri: 'ModelUri/{id}', name: 'ModelUri.destroy')]
     public function destroy(string $id): JsonResponse

@@ -19,8 +19,6 @@ class DummyClass implements DummyInterface
 {
     /**
      * Class Constructor.
-     *
-     * @param DummyRepository $repository The model object to be injected.
      */
     public function __construct(
         protected DummyRepository $repository
@@ -29,23 +27,17 @@ class DummyClass implements DummyInterface
 
     /**
      * Create a new DummyModel resource.
-     *
-     * @param DummyModelRequest $request The request object containing the data for creating a DummyModel.
-     *
-     * @return EntityResourceTransformer Returns the newly created UserResource if successful,
-     * or null if the User creation failed.
      */
-    public function create(DummyModelRequest $request): EntityResourceTransformer
-    {
-        return new EntityResourceTransformer($this->repository->create($request->all()));
+    public function create(
+        DummyModelRequest $request
+    ): EntityResourceTransformer {
+        return new EntityResourceTransformer(
+            $this->repository->create($request->all())
+        );
     }
 
     /**
      * Read a DummyModel resource by ID.
-     *
-     * @param string $id The ID of the DummyModel resource to fetch.
-     *
-     * @return EntityResourceTransformer The DummyModel resource, or null if not found.
      */
     public function read(string $id): EntityResourceTransformer
     {
@@ -54,23 +46,17 @@ class DummyClass implements DummyInterface
 
     /**
      * Updates a DummyModel resource.
-     *
-     * @param string $id The ID of the DummyModel resource to update.
-     * @param DummyModelRequest $request The request data for updating the DummyModel.
-     *
-     * @return bool
      */
     public function update(string $id, DummyModelRequest $request): bool
     {
-        return $this->repository->update($this->repository->read($id), $request->all());
+        return $this->repository->update(
+            $this->repository->read($id),
+            $request->all()
+        );
     }
 
     /**
      * Deletes a DummyModel object based on the provided ID.
-     *
-     * @param string $id The ID of the DummyModel object to delete.
-     *
-     * @return bool True if the deletion was successful, false otherwise.
      */
     public function delete(string $id): bool
     {
@@ -79,12 +65,12 @@ class DummyClass implements DummyInterface
 
     /**
      * List all DummyModel resources.
-     *
-     * @return JsonApiPaginationTransformer
      */
     public function list(): JsonApiPaginationTransformer
     {
         $options = new QueryFilters();
-        return new JsonApiPaginationTransformer($this->repository->list($options));
+        return new JsonApiPaginationTransformer(
+            $this->repository->list($options)
+        );
     }
 }

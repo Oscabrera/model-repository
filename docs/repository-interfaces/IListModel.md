@@ -20,10 +20,6 @@ interface IListModel
 {
     /**
      * Lists records from the database based on the given conditions.
-     *
-     * @param QueryFilters $options
-     *
-     * @return LengthAwarePaginator An array of records that match the conditions.
      */
     public function list(QueryFilters $options): LengthAwarePaginator;
 }

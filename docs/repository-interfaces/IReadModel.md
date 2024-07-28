@@ -19,10 +19,6 @@ interface IReadModel
 {
     /**
      * Reads a record from the database based on the given ID.
-     *
-     * @param string $id The ID of the record to be fetched.
-     *
-     * @return Model The fetched record.
      */
     public function read(string $id): Model;
 }

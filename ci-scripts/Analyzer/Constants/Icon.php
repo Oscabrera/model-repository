@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository\CIScripts\Analyzer\Constants;
 
 class Icon
@@ -14,14 +16,18 @@ class Icon
 
     /**
      * Get the value of a constant with the given name.
-     *
-     * @param string $name The name of the constant.
-     * @return string The value of the constant.
      */
     public static function get(string $name): string
     {
-        $icon = constant("self::$name") ?? '';
-        /** @var string $icon */
-        return $icon;
+        $constantName = "self::{$name}";
+
+        if (defined($constantName)) {
+            $value = constant($constantName);
+            if (is_string($value)) {
+                return $value;
+            }
+        }
+
+        return '';
     }
 }

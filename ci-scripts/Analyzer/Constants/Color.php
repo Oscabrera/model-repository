@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository\CIScripts\Analyzer\Constants;
 
 class Color
@@ -13,14 +15,18 @@ class Color
 
     /**
      * Get the value of a constant with the given name.
-     *
-     * @param string $name The name of the constant.
-     * @return string The value of the constant.
      */
     public static function get(string $name): string
     {
-        $color = constant("self::$name") ?? '';
-        /** @var string $color */
-        return $color;
+        $constantName = "self::{$name}";
+
+        if (defined($constantName)) {
+            $value = constant($constantName);
+            if (is_string($value)) {
+                return $value;
+            }
+        }
+
+        return '';
     }
 }

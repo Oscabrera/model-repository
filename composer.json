@@ -47,8 +47,14 @@
         "phpmd/phpmd": "^2.15"
     },
     "scripts": {
-        "phpstan": "php ci-scripts/phpStan/run.php",
+        "phpstan": "php ci-scripts/PhpStan/run.php",
         "pint": "php ci-scripts/Pint/run.php",
-        "phpmd": "php ci-scripts/phpMD/run.php"
+        "phpmd": "php ci-scripts/PhpMD/run.php"
+
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

@@ -52,9 +52,8 @@ class BindingServiceProvider extends ServiceProvider
 
     /**
      * Registers the necessary commands for the application.
-     * Only registers the command if the application is running in the console and is in the local environment.
-     *
-     * @return void
+     * Only registers the command if the application is running in the 
+     *   console and is in the local environment.
      */
     public function register(): void
     {

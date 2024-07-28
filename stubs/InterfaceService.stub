@@ -11,19 +11,13 @@ interface DummyClass
 {
     /**
      * Create a new DummyModel resource.
-     *
-     * @param DummyModelRequest $request The request object containing the data for creating a spec.
-     *
-     * @return EntityResourceTransformer Returns the newly created DummyModelResource if successful, or null if the spec creation failed.
      */
-    public function create(DummyModelRequest $request): EntityResourceTransformer;
+    public function create(
+        DummyModelRequest $request
+    ): EntityResourceTransformer;
 
     /**
      * Read a DummyModel resource by ID.
-     *
-     * @param string $id The ID of the spec resource to fetch.
-     *
-     * @return EntityResourceTransformer The spec resource, or null if not found.
      *
      * @throws ModelNotFoundException
      */
@@ -32,11 +26,6 @@ interface DummyClass
     /**
      * Updates a DummyModel resource.
      *
-     * @param string $id The ID of the spec resource to update.
-     * @param DummyModelRequest $request The request data for updating the spec.
-     *
-     * @return bool
-     *
      * @throws ModelNotFoundException
      */
     public function update(string $id, DummyModelRequest $request): bool;
@@ -44,20 +33,12 @@ interface DummyClass
     /**
      * Deletes a DummyModel object based on the provided ID.
      *
-     * @param string $id The ID of the DummyModel object to delete.
-     *
-     * @return bool True if the deletion was successful, false otherwise.
-     *
      * @throws ModelNotFoundException
      */
     public function delete(string $id): bool;
 
     /**
      * List all DummyModel resources.
-     *
-     * @return JsonApiPaginationTransformer
-     *
-     * @throws ModelNotFoundException
      */
     public function list(): JsonApiPaginationTransformer;
 }
