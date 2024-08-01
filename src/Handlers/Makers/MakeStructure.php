@@ -132,16 +132,16 @@ class MakeStructure
     /**
      * Convert the given name to snake case.
      */
-    protected function nameSnakeCase(string $name): string
+    protected function nameKebabCase(string $name): string
     {
-        return $this->str::snake($name);
+        return $this->str::kebab($name);
     }
 
     /**
      * Returns the plural form of the given name in snake case.
      */
-    protected function namePluralSnakeCase(string $name): string
+    protected function namePluralKebabCase(string $name): string
     {
-        return $this->str::plural($this->nameSnakeCase($name));
+        return $this->str::plural($this->nameKebabCase($name));
     }
 }
