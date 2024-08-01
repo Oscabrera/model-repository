@@ -55,7 +55,7 @@ class MakeController extends MakeStructure
             'DummyModel' => $name,
             'DummyClass' => $name . $this->type,
             'DummyService' => 'I' . $name . 'Service',
-            'ModelUri' => $this->namePluralSnakeCase($name),
+            'ModelUri' => $this->namePluralKebabCase($name),
         ];
     }
 }

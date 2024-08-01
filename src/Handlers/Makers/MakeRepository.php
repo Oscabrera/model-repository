@@ -55,7 +55,7 @@ class MakeRepository extends MakeStructure implements BindingInterface
         $service = "{$pathService}{$name}{$this->type}";
         $interface = "{$pathInterface}I{$name}{$this->type}";
         $this->updateConfigFile(
-            $this->nameSnakeCase($name) . '-repository',
+            $this->nameKebabCase($name) . '-repository',
             $interface,
             $service
         );
