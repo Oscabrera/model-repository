@@ -130,7 +130,7 @@ class MakeStructure
     }
 
     /**
-     * Convert the given name to snake case.
+     * Convert the given name to kebab case.
      */
     protected function nameKebabCase(string $name): string
     {
@@ -138,7 +138,7 @@ class MakeStructure
     }
 
     /**
-     * Returns the plural form of the given name in snake case.
+     * Returns the plural form of the given name in kebab case.
      */
     protected function namePluralKebabCase(string $name): string
     {
