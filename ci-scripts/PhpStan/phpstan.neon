@@ -1,0 +1,17 @@
+includes:
+parameters:
+    paths:
+        - ../../src
+    # Level 9 is the highest level
+    level: 9
+    ignoreErrors:
+        - "#(Property|Method) [a-zA-Z0-9\\\\]+::(\\$[a-zA-Z0-9_]+|[a-zA-Z0-9_]+\\(\\)) (with|return type with) generic (class|interface) [a-zA-Z0-9\\\\]+ does not specify its types: [a-zA-Z0-9\\\\]+#"
+        - "#Method [a-zA-Z0-9\\\\]+::(\\$[a-zA-Z0-9_]+|[a-zA-Z0-9_]+\\(\\)) has parameter \\$[a-zA-Z0-9_]+ with generic class [a-zA-Z0-9\\\\]+ but does not specify its types: [a-zA-Z0-9\\\\]+#"
+        - "#PHPDoc tag @var for variable \\$[a-zA-Z0-9_]+ contains generic class [a-zA-Z0-9\\\\]+ but does not specify its types: [a-zA-Z0-9\\\\]+#"
+        - "#of function (strval|intval|floatval|boolval) expects [a-z]+|, mixed given#"
+    excludePaths:
+        - ../../vendor/*
+        - ../../phpinsights.php
+    checkMissingIterableValueType: true
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false

@@ -13,7 +13,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Oscabrera\\ModelRepository\\": "src/"
+            "Oscabrera\\ModelRepository\\": "src/",
+            "Oscabrera\\AnalyzerTool\\CIScripts\\": "ci-scripts/"
         }
     },
     "require": {
@@ -39,5 +40,20 @@
         "Artisan command",
         "structure",
         "package"
-    ]
+    ],
+    "require-dev": {
+        "phpstan/phpstan": "^1.11",
+        "laravel/pint": "^1.16",
+        "phpmd/phpmd": "^2.15"
+    },
+    "scripts": {
+        "phpstan": "php ci-scripts/PhpStan/run.php",
+        "pint": "php ci-scripts/Pint/run.php",
+        "phpmd": "php ci-scripts/PhpMD/run.php"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
 }

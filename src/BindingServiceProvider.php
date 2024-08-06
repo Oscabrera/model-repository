@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository;
 
 use Illuminate\Support\ServiceProvider;
@@ -18,20 +20,20 @@ class BindingServiceProvider extends ServiceProvider
 
     /**
      * Registers the necessary commands for the application.
-     * Only registers the command if the application is running in the console and is in the local environment.
-     *
-     * @return void
+     * Only registers the command if the application is running in the
+     * console and is in the local environment.
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/binding-provider.php', 'binding-provider');
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/binding-provider.php',
+            'binding-provider'
+        );
         $this->bindInterfaces();
     }
 
     /**
      * Binds interfaces to their implementations.
-     *
-     * @return void
      */
     private function bindInterfaces(): void
     {
@@ -41,7 +43,10 @@ class BindingServiceProvider extends ServiceProvider
         }
         foreach ($bindings as $binding) {
             if (isset($binding['interface'], $binding['implementation'])) {
-                $this->app->bind($binding['interface'], $binding['implementation']);
+                $this->app->bind(
+                    $binding['interface'],
+                    $binding['implementation']
+                );
             }
         }
     }

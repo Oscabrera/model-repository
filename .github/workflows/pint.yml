@@ -1,0 +1,40 @@
+# Sample workflow for validating and linting PHP code with Laravel Pint
+name: Pint
+
+on:
+  push:
+    branches:
+      - 'Feature/*'
+
+jobs:
+  phpstan:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            composer-
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Run PHPStan
+        run: composer pint

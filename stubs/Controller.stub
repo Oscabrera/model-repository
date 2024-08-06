@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DummyModel\DummyModelRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Oscabrera\ModelRepository\Exception\ModelCreateException;
 use Spatie\RouteAttributes\Attributes\Delete;
 use Spatie\RouteAttributes\Attributes\Get;
 use Spatie\RouteAttributes\Attributes\Post;
@@ -45,13 +44,7 @@ class DummyClass extends Controller
     #[Post(uri: 'ModelUri', name: 'ModelUri.create')]
     public function create(DummyModelRequest $request): JsonResponse
     {
-        try {
-            $created = $this->service->create($request);
-        } catch (ModelCreateException $exception) {
-            return response()->json([
-                'message' => $exception->getMessage(),
-            ], Response::HTTP_BAD_REQUEST);
-        }
+        $created = $this->service->create($request);
         return response()->json($created);
     }
 

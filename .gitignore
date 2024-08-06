@@ -6,3 +6,4 @@ cache
 .idea
 .vitepress/cache
 .vitepress/dist
+composer.lock
