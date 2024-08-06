@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\ModelRepository\CIScripts\Pint;
+namespace Oscabrera\AnalyzerTool\CIScripts\Pint;
 
-use Oscabrera\ModelRepository\CIScripts\Analyzer\Analyzer;
+use Oscabrera\AnalyzerTool\CIScripts\Analyzer\Analyzer;
 
 class PintAnalyzer extends Analyzer
 {
@@ -17,9 +17,7 @@ class PintAnalyzer extends Analyzer
         parent::__construct(
             'Pint',
             <<<CMD
-            ./vendor/bin/pint --test --config \\
-            ci-scripts/Pint/pint.json \\
-            --ansi %FILES%
+            ./vendor/bin/pint --test --config ci-scripts/Pint/pint.json --ansi %FILES%
             CMD,
             $args
         );
