@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\ModelRepository\CIScripts\PhpMD;
+namespace Oscabrera\AnalyzerTool\CIScripts\PhpMD;
 
-use Oscabrera\ModelRepository\CIScripts\Analyzer\Analyzer;
+use Oscabrera\AnalyzerTool\CIScripts\Analyzer\Analyzer;
 
 class PhpMDAnalyzer extends Analyzer
 {
@@ -18,9 +18,7 @@ class PhpMDAnalyzer extends Analyzer
         parent::__construct(
             'PHP Mess Detector',
             <<<CMD
-            ./vendor/bin/phpmd %FILES% ansi \\
-            cleancode,codesize,controversial,design,unusedcode \\
-            --exclude *vendor
+            ./vendor/bin/phpmd %FILES% ansi cleancode,codesize,controversial,design,unusedcode --exclude *vendors
             CMD,
             $args
         );

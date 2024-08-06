@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\ModelRepository\CIScripts\Analyzer;
+namespace Oscabrera\AnalyzerTool\CIScripts\Analyzer;
 
 class ArgumentHandler
 {

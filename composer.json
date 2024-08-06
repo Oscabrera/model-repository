@@ -14,7 +14,7 @@
     "autoload": {
         "psr-4": {
             "Oscabrera\\ModelRepository\\": "src/",
-            "Oscabrera\\ModelRepository\\CIScripts\\": "ci-scripts/"
+            "Oscabrera\\AnalyzerTool\\CIScripts\\": "ci-scripts/"
         }
     },
     "require": {
@@ -50,7 +50,6 @@
         "phpstan": "php ci-scripts/PhpStan/run.php",
         "pint": "php ci-scripts/Pint/run.php",
         "phpmd": "php ci-scripts/PhpMD/run.php"
-
     },
     "config": {
         "allow-plugins": {

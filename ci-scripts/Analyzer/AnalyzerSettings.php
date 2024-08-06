@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\ModelRepository\CIScripts\Analyzer;
+namespace Oscabrera\AnalyzerTool\CIScripts\Analyzer;
 
 use Exception;
-use Oscabrera\ModelRepository\CIScripts\Analyzer\Constants\Color;
-use Oscabrera\ModelRepository\CIScripts\Analyzer\Constants\Icon;
+use Oscabrera\AnalyzerTool\CIScripts\Analyzer\Constants\Color;
+use Oscabrera\AnalyzerTool\CIScripts\Analyzer\Constants\Icon;
 use RuntimeException;
 
 /**
