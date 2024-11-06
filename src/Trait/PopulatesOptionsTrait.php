@@ -72,12 +72,12 @@ trait PopulatesOptionsTrait
     private function createOptionsObject(array $optionValues): Options
     {
         return new Options(
+            $optionValues['hasSeeder'],
             $optionValues['hasMigration'],
             $optionValues['hasFactory'],
+            $optionValues['hasService'],
             $optionValues['hasController'],
             $optionValues['hasRequest'],
-            $optionValues['hasService'],
-            $optionValues['hasSeeder'],
             $optionValues['force']
         );
     }
