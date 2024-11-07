@@ -27,7 +27,7 @@ class BindingServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(
             __DIR__ . '/../config/binding-provider.php',
-            'binding-provider'
+            'binding-provider',
         );
         $this->bindInterfaces();
     }
@@ -45,7 +45,7 @@ class BindingServiceProvider extends ServiceProvider
             if (isset($binding['interface'], $binding['implementation'])) {
                 $this->app->bind(
                     $binding['interface'],
-                    $binding['implementation']
+                    $binding['implementation'],
                 );
             }
         }

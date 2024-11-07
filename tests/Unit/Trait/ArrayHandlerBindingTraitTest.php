@@ -1,8 +1,9 @@
 <?php
+
 use Oscabrera\DevTools\ClassAccessUtils;
 
 beforeEach(function () {
-    $this->classUsingTrait = (new ClassAccessUtils)->getClassUsingTrait('ArrayHandlerBindingTrait');
+    $this->classUsingTrait = (new ClassAccessUtils())->getClassUsingTrait('ArrayHandlerBindingTrait');
 });
 
 
@@ -10,7 +11,7 @@ it('Returns formatted class reference', function () {
     $result = ClassAccessUtils::callPrivateMethod(
         $this->classUsingTrait,
         'formatClassReference',
-        ['interface', 'App\Contracts\Services\Level\ILevelService', '    ']
+        ['interface', 'App\Contracts\Services\Level\ILevelService', '    '],
     );
     expect($result)->toBe("    'interface' => App\Contracts\Services\Level\ILevelService::class,");
 });
@@ -19,19 +20,19 @@ it('Checks if the given key is an interface or implementation', function () {
     $result = ClassAccessUtils::callPrivateMethod(
         $this->classUsingTrait,
         'isInterface',
-        ['interface']
+        ['interface'],
     );
     expect($result)->toBeTrue();
     $result = ClassAccessUtils::callPrivateMethod(
         $this->classUsingTrait,
         'isInterface',
-        ['implementation']
+        ['implementation'],
     );
     expect($result)->toBeTrue();
     $result = ClassAccessUtils::callPrivateMethod(
         $this->classUsingTrait,
         'isInterface',
-        ['something else']
+        ['something else'],
     );
     expect($result)->toBeFalse();
 });
@@ -66,8 +67,8 @@ it('Adds new bindings', function () {
             'level-repository' => [
                 'interface' => 'App\Repositories\Level\ILevelRepository',
                 'implementation' => 'App\Contracts\Repositories\Level\LevelRepository',
-            ]
-        ]
+            ],
+        ],
     ];
     $newBindings = [
         'user-repository' => [

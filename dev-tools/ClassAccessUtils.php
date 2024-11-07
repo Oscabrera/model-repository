@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use InvalidArgumentException;
 use Oscabrera\ModelRepository\Trait\ArrayHandlerBindingTrait;
 use Oscabrera\ModelRepository\Trait\FailedValidationTrait;
-use Oscabrera\ModelRepository\Trait\MainCommandTrait;
 use Oscabrera\ModelRepository\Trait\OptionsTrait;
 use Oscabrera\ModelRepository\Trait\PopulatesOptionsTrait;
 use ReflectionClass;
@@ -27,7 +26,6 @@ class ClassAccessUtils
             'OptionsTrait' => $this->getOptionsTrait(),
             'FailedValidationTrait' => $this->getFailedValidationTrait(),
             'ArrayHandlerBindingTrait' => $this->getArrayHandlerBindingTrait(),
-            'MainCommandTrait' => $this->getMainCommandTrait(),
             default => throw new InvalidArgumentException("Trait {$traitName} not found."),
         };
     }
@@ -66,6 +64,7 @@ class ClassAccessUtils
         return new class {
             use PopulatesOptionsTrait;
 
+            /** @var array<string, bool>  */
             private array $options = [];
 
             public function hasOption(string $option): bool
@@ -73,11 +72,14 @@ class ClassAccessUtils
                 return isset($this->options[$option]);
             }
 
-            public function option(string $option)
+            public function option(string $option): ?bool
             {
                 return $this->options[$option] ?? null;
             }
 
+            /**
+             * @param array<string, bool> $options
+             */
             public function setOptions(array $options): void
             {
                 $this->options = $options;
@@ -95,6 +97,7 @@ class ClassAccessUtils
         return new class {
             use OptionsTrait;
 
+            /** @var array<string, bool>  */
             private array $options = [];
 
             public function hasOption(string $option): bool
@@ -102,11 +105,14 @@ class ClassAccessUtils
                 return isset($this->options[$option]);
             }
 
-            public function option(string $option)
+            public function option(string $option): ?bool
             {
                 return $this->options[$option] ?? null;
             }
 
+            /**
+             * @param array<string, bool> $options
+             */
             public function setOptions(array $options): void
             {
                 $this->options = $options;
@@ -119,11 +125,14 @@ class ClassAccessUtils
         return new class extends FormRequest {
             use FailedValidationTrait;
 
-            public function authorize()
+            public function authorize(): bool
             {
                 return true;
             }
 
+            /**
+             * @return array<string, string>
+             */
             public function rules(): array
             {
                 return [];
@@ -135,14 +144,6 @@ class ClassAccessUtils
     {
         return new class {
             use ArrayHandlerBindingTrait;
-        };
-    }
-
-    private function getMainCommandTrait(): object
-    {
-        return new class {
-            use MainCommandTrait;
-            use PopulatesOptionsTrait;
         };
     }
 }

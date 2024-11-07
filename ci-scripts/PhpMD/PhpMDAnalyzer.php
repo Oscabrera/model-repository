@@ -20,7 +20,7 @@ class PhpMDAnalyzer extends Analyzer
             <<<CMD
             ./vendor/bin/phpmd %FILES% ansi cleancode,codesize,controversial,design,unusedcode --exclude *vendors
             CMD,
-            $args
+            $args,
         );
     }
 }

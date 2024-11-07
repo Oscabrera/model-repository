@@ -34,14 +34,14 @@ class MakeInterfaceServices extends MakeStructure
         $path = $this->getFilePath(
             $directory,
             'I' . $name,
-            'Service'
+            'Service',
         );
 
         return $this->createFromClassStub(
             $path,
             $replace,
             $this->type,
-            $options
+            $options,
         );
     }
 

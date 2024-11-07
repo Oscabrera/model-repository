@@ -34,7 +34,7 @@ it('has a title', function () {
 });
 
 it('can be converted to a string', function () {
-    expect((string)$this->exception)->toContain(
+    expect((string) $this->exception)->toContain(
         "\Exception\CustomException [404] Exception: Test Exception Message\n",
     );
 });

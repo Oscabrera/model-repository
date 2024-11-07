@@ -78,7 +78,7 @@ trait PopulatesOptionsTrait
             $optionValues['hasService'],
             $optionValues['hasController'],
             $optionValues['hasRequest'],
-            $optionValues['force']
+            $optionValues['force'],
         );
     }
 

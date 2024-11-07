@@ -6,11 +6,10 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\MessageBag;
 use Oscabrera\DevTools\ClassAccessUtils;
-use PHPUnit\Framework\MockObject\Exception as MockeryException;
 use Symfony\Component\HttpFoundation\Response;
 
 beforeEach(function () {
-    $this->classUsingTrait = (new ClassAccessUtils)->getClassUsingTrait('FailedValidationTrait');
+    $this->classUsingTrait = (new ClassAccessUtils())->getClassUsingTrait('FailedValidationTrait');
 });
 
 afterEach(function () {

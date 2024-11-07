@@ -23,7 +23,7 @@ class CreateStructureException extends CustomException
         parent::__construct(
             "Create {$type} Error",
             "{$message} [{$path}]",
-            ['type' => $type, 'path' => $path]
+            ['type' => $type, 'path' => $path],
         );
     }
 }

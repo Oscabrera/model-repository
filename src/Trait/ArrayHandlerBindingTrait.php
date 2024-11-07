@@ -38,7 +38,7 @@ trait ArrayHandlerBindingTrait
     {
         $config['interfaces'] = array_merge(
             $config['interfaces'],
-            $newBindings
+            $newBindings,
         );
         $configContent = $this->formatArray($config);
         $eol = PHP_EOL;
@@ -64,7 +64,7 @@ trait ArrayHandlerBindingTrait
                     $value,
                     $key,
                     $indent,
-                    $indentLevel
+                    $indentLevel,
                 );
                 continue;
             }
@@ -91,7 +91,7 @@ trait ArrayHandlerBindingTrait
         array $value,
         string $key,
         string $indent,
-        int $indentLevel
+        int $indentLevel,
     ): array {
         $lines[] = "{$indent}'{$key}' => [";
         $lines[] = $this->formatArray($value, $indentLevel + 1);

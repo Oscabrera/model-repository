@@ -37,7 +37,7 @@ class MakeController extends MakeStructure
             $path,
             $replace,
             $this->type,
-            $options
+            $options,
         );
     }
 

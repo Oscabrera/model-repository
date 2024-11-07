@@ -3,7 +3,7 @@
 use Oscabrera\DevTools\ClassAccessUtils;
 
 beforeEach(function () {
-    $this->classUsingTrait = (new ClassAccessUtils)->getClassUsingTrait('OptionsTrait');
+    $this->classUsingTrait = (new ClassAccessUtils())->getClassUsingTrait('OptionsTrait');
 });
 
 afterEach(function () {

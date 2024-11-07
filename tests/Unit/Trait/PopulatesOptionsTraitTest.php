@@ -4,7 +4,7 @@ use Oscabrera\DevTools\ClassAccessUtils;
 use Oscabrera\ModelRepository\Classes\Options;
 
 beforeEach(function () {
-    $this->classUsingTrait = (new ClassAccessUtils)->getClassUsingTrait('PopulatesOptionsTrait');
+    $this->classUsingTrait = (new ClassAccessUtils())->getClassUsingTrait('PopulatesOptionsTrait');
 });
 
 afterEach(function () {
@@ -38,7 +38,7 @@ it('Initializes the option values', function () {
     $result = ClassAccessUtils::callPrivateMethod(
         $this->classUsingTrait,
         'initializeOptionValues',
-        [$optionsList]
+        [$optionsList],
     );
     expect($result)->toBe([
         'hasSeeder' => false,
@@ -47,7 +47,7 @@ it('Initializes the option values', function () {
         'hasService' => false,
         'hasController' => false,
         'hasRequest' => false,
-        'force' => false
+        'force' => false,
     ]);
 });
 
@@ -59,12 +59,12 @@ it('Creates an Options object', function () {
         'hasService' => false,
         'hasController' => false,
         'hasRequest' => false,
-        'force' => true
+        'force' => true,
     ];
     $result = ClassAccessUtils::callPrivateMethod(
         $this->classUsingTrait,
         'createOptionsObject',
-        [$optionsValues]
+        [$optionsValues],
     );
 
     expect($result)->toBeInstanceOf(Options::class)
@@ -110,7 +110,7 @@ it('Tests the "force" option', function () {
     $option = ClassAccessUtils::callPrivateMethod(
         $this->classUsingTrait,
         'createOptionsObject',
-        [$optionsValues]
+        [$optionsValues],
     );
     $option->forceAll();
 

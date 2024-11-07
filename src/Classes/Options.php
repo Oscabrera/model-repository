@@ -19,8 +19,7 @@ class Options
         protected bool $controller,
         protected bool $request,
         protected bool $force,
-    ) {
-    }
+    ) {}
 
     /**
      * Determines if the seeder should be created.

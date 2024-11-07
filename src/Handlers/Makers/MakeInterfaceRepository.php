@@ -34,14 +34,14 @@ class MakeInterfaceRepository extends MakeStructure
         $path = $this->getFilePath(
             $directory,
             'I' . $name,
-            'Repository'
+            'Repository',
         );
 
         return $this->createFromClassStub(
             $path,
             $replace,
             $this->type,
-            $options
+            $options,
         );
     }
 

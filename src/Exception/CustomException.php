@@ -51,7 +51,7 @@ class CustomException extends Exception
         string $message,
         array $input = [],
         int $code = Response::HTTP_BAD_REQUEST,
-        ?Exception $previous = null
+        ?Exception $previous = null,
     ) {
         parent::__construct($message, $code, $previous);
         $this->title = $title;

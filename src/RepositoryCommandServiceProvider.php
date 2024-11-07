@@ -13,9 +13,7 @@ use Oscabrera\ModelRepository\Commands\Handlers;
  */
 class RepositoryCommandServiceProvider extends ServiceProvider
 {
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 
     public function register(): void
     {

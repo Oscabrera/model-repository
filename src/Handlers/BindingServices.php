@@ -38,17 +38,18 @@ class BindingServices
      * @param string $configPath The path to the configuration file.
      *
      * @return array{
-     *      interfaces?: array<string,
-     *      array{interface: string, implementation: string}
+     *      interfaces: array<string,
+     *      array{interface: string, implementation: string}>
      *     }
      *  The configuration file content.
      */
     private function getConfigFile(string $configPath): array
     {
         $config = file_exists($configPath) ? require $configPath : [];
-        $config['interfaces'] = isset($config['interfaces']) && is_array(
-            $config['interfaces']
-        ) ? $config['interfaces'] : [];
+        $config['interfaces'] = isset($config['interfaces'])
+        && is_array($config['interfaces'])
+            ? $config['interfaces']
+            : [];
 
         return $config;
     }
@@ -60,7 +61,8 @@ class BindingServices
      * @param string $interfaceClass The fully qualified name of the interface class.
      * @param string $serviceClass The fully qualified name of the service class implementing the interface.
      *
-     * @return array Returns an associative array with the service name as the key and its binding configuration as the value.
+     * @return array<string, array{interface: string, implementation: string}>
+     *     Returns an associative array with the service name as the key and its binding configuration as the value.
      */
     private function defineBindings(string $name, string $interfaceClass, string $serviceClass): array
     {
