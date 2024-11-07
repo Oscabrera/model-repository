@@ -19,7 +19,7 @@ class PintAnalyzer extends Analyzer
             <<<CMD
             ./vendor/bin/pint --test --config ci-scripts/Pint/pint.json --ansi %FILES%
             CMD,
-            $args
+            $args,
         );
     }
 }

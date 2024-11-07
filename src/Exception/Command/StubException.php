@@ -22,7 +22,7 @@ class StubException extends CustomException
         parent::__construct(
             "Stub {$type} Error",
             "{$type} stub file not found in [ {$path} ]",
-            ['type' => $type, 'path' => $path]
+            ['type' => $type, 'path' => $path],
         );
     }
 }

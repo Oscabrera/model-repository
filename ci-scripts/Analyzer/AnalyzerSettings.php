@@ -47,7 +47,7 @@ class AnalyzerSettings
     protected function echoColor(
         string $message,
         string $color,
-        string $icon = ''
+        string $icon = '',
     ): void {
         echo "\n";
         echo $icon . $color . '  ' . $message . $this->color::get('END');
@@ -63,7 +63,7 @@ class AnalyzerSettings
         $this->echoColor(
             'No files modified to analyze',
             $this->color::get('BLUE'),
-            $this->icon::get('NO_FILES')
+            $this->icon::get('NO_FILES'),
         );
     }
 
@@ -75,7 +75,7 @@ class AnalyzerSettings
         $this->echoColor(
             "{$this->tool} analysis succeeded",
             $this->color::get('BLUE'),
-            $this->icon::get('SUCCESS')
+            $this->icon::get('SUCCESS'),
         );
     }
 
@@ -95,7 +95,7 @@ class AnalyzerSettings
         $this->echoColor(
             $message,
             $this->color::get('GREEN'),
-            $icon === '' ? $this->icon::get('SUCCESS') : $icon
+            $icon === '' ? $this->icon::get('SUCCESS') : $icon,
         );
     }
 
@@ -103,12 +103,12 @@ class AnalyzerSettings
      * Report that Exception was thrown
      */
     protected function reportExceptionThrown(
-        RuntimeException|Exception $exception
+        RuntimeException|Exception $exception,
     ): void {
         $this->echoColor(
             $exception->getMessage(),
             $this->color::get('RED'),
-            $this->icon::get('EXCEPTION')
+            $this->icon::get('EXCEPTION'),
         );
     }
 
@@ -120,7 +120,7 @@ class AnalyzerSettings
         $this->echoColor(
             'Executing analysis on ' . $file,
             $this->color::get('YELLOW'),
-            $this->icon::get('STACK_TRACE')
+            $this->icon::get('STACK_TRACE'),
         );
     }
 
@@ -132,7 +132,7 @@ class AnalyzerSettings
         $this->echoColor(
             'Executing analysis on .',
             $this->color::get('YELLOW'),
-            $this->icon::get('STACK_TRACE')
+            $this->icon::get('STACK_TRACE'),
         );
     }
 }

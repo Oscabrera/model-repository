@@ -17,6 +17,21 @@ trait FailedValidationTrait
     protected function failedValidation(Validator $validator): void
     {
         $errors = (new ValidationException($validator))->errors();
+
+        $formattedErrors = $this->formatErrors($errors);
+        $this->infoCommand($formattedErrors);
+    }
+
+    /**
+     * formatErrors method takes an array of errors and formats them into a standardized format.
+     *
+     * @param array<string, array<int, string>> $errors The array of errors to be formatted.
+     *
+     * @return array<int, array{field: string, title: string, message: string, detail: array<int, string>}>
+     * The formatted errors in the form of an array of associative arrays.
+     */
+    private function formatErrors(array $errors): array
+    {
         $formattedErrors = [];
         foreach ($errors as $field => $message) {
             $formattedErrors[] = [
@@ -26,12 +41,29 @@ trait FailedValidationTrait
                 'detail' => $message,
             ];
         }
+        return $formattedErrors;
+    }
 
+    /**
+     * infoCommand method throws an HttpResponseException with a JSON response containing formatted errors.
+     *
+     * @param array<int, array{
+     *     field: string,
+     *     title: string,
+     *     message: string,
+     *     detail: array<int, string>
+     *         }> $formattedErrors
+     * The formatted errors to be included in the JSON response.
+     *
+     * @throws HttpResponseException When called, it throws an HttpResponseException.
+     */
+    private function infoCommand(array $formattedErrors): void
+    {
         throw new HttpResponseException(
             response()->json(
                 ['errors' => $formattedErrors],
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            )
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+            ),
         );
     }
 }

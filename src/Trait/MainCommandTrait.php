@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Oscabrera\ModelRepository\Trait;
 
 use Oscabrera\ModelRepository\Contracts\BindingInterface;

@@ -10,9 +10,8 @@ class ArgumentHandler
      * @param array<int, string> $args The arguments. Defaults to an empty array.
      */
     public function __construct(
-        protected array $args
-    ) {
-    }
+        protected array $args,
+    ) {}
 
     /**
      * Check if it should analyze all files.

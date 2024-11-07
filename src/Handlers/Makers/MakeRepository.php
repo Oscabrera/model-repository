@@ -40,7 +40,7 @@ class MakeRepository extends MakeStructure implements BindingInterface
             $path,
             $replace,
             $this->type,
-            $options
+            $options,
         );
     }
 
@@ -57,7 +57,7 @@ class MakeRepository extends MakeStructure implements BindingInterface
         $this->updateConfigFile(
             $this->nameKebabCase($name) . '-repository',
             $interface,
-            $service
+            $service,
         );
     }
 

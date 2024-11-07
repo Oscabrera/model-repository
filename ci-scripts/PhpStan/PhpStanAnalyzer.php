@@ -19,7 +19,7 @@ class PhpStanAnalyzer extends Analyzer
             <<<CMD
             ./vendor/bin/phpstan analyse --memory-limit=1G -c ci-scripts/PhpStan/phpstan.neon --ansi %FILES%
             CMD,
-            $args
+            $args,
         );
     }
 }

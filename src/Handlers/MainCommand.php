@@ -38,9 +38,8 @@ class MainCommand
         protected MakeService $makeService,
         protected MakeInterfaceServices $makeInterfaceServices,
         protected MakeController $makeController,
-        protected MakeRequest $makeRequest
-    ) {
-    }
+        protected MakeRequest $makeRequest,
+    ) {}
 
     /**
      * Sets the output object to be used for displaying messages.
@@ -56,7 +55,7 @@ class MainCommand
     public function handle(
         Command $command,
         string $name,
-        Options $options
+        Options $options,
     ): void {
         $this->command = $command;
         $this->name = $name;
@@ -90,8 +89,8 @@ class MainCommand
             sprintf(
                 '%s [%s] created successfully.',
                 $info['type'],
-                $info['path']
-            )
+                $info['path'],
+            ),
         );
     }
 

@@ -17,6 +17,4 @@ interface IRepositoryResource extends
     IReadModel,
     IUpdateModel,
     IDeleteModel,
-    IListModel
-{
-}
+    IListModel {}
