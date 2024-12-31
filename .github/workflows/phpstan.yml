@@ -6,8 +6,13 @@ name: PHPStan
 
 on:
   push:
-    branches:
-      - 'Feature/*'
+    branches-ignore:
+      - 'main'
+      - 'develop'
+  pull_request:
+    branches-ignore:
+      - 'main'
+      - 'develop'
 
 jobs:
   phpstan:
@@ -15,12 +20,12 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Cache Composer dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: vendor
           key: composer-${{ hashFiles('**/composer.lock') }}
@@ -28,7 +33,7 @@ jobs:
             composer-
 
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
