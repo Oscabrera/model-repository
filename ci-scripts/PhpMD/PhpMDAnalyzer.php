@@ -18,7 +18,7 @@ class PhpMDAnalyzer extends Analyzer
         parent::__construct(
             'PHP Mess Detector',
             <<<CMD
-            ./vendor/bin/phpmd %FILES% ansi cleancode,codesize,controversial,design,unusedcode --exclude *vendors
+            ./vendor/bin/phpmd %FILES% ansi cleancode,codesize,controversial,design,unusedcode --exclude *vendor/
             CMD,
             $args,
         );
