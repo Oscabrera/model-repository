@@ -1,6 +1,6 @@
 <?php
 
-use Oscabrera\DevTools\ClassAccessUtils;
+use Oscabrera\ModelRepository\DevTools\ClassAccessUtils;
 use Oscabrera\ModelRepository\Classes\Options;
 
 beforeEach(function () {

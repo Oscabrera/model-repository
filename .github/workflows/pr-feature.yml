@@ -1,0 +1,132 @@
+# Parallel code analysis for PRs - PHPStan, Laravel Pint and PHPMD
+name: Code Analysis
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+      - 'develop'
+  pull_request:
+    branches-ignore:
+      - 'main'
+      - 'develop'
+
+jobs:
+  setup:
+    name: Setup Dependencies
+    runs-on: ubuntu-24.04
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.key }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer
+          coverage: none
+
+      - name: Generate cache key
+        id: cache-key
+        run: echo "key=${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ steps.cache-key.outputs.key }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+  analysis:
+    name: Run ${{ matrix.tool }}
+    runs-on: ubuntu-24.04
+    needs: setup
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        tool: [phpstan, pint, phpmd]
+        include:
+          - tool: phpstan
+            command: composer phpstan
+            display: PHPStan
+          - tool: pint
+            command: composer pint
+            display: Laravel Pint
+          - tool: phpmd
+            command: composer phpmd
+            display: PHPMD
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          tools: composer
+          coverage: none
+
+      - name: Restore Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ needs.setup.outputs.cache-key }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Run ${{ matrix.display }}
+        id: analysis
+        run: |
+          echo "::group::Running ${{ matrix.display }}"
+          if ${{ matrix.command }}; then
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "✅ ${{ matrix.display }} executed successfully"
+          else
+            echo "result=failure" >> $GITHUB_OUTPUT
+            echo "❌ ${{ matrix.display }} failed"
+            exit 1
+          fi
+          echo "::endgroup::"
+
+  summary:
+    name: Analysis Summary
+    runs-on: ubuntu-24.04
+    needs: [setup, analysis]
+    if: always()
+
+    steps:
+      - name: Check analysis results
+        run: |
+          echo "🔍 Code analysis summary:"
+          echo "========================="
+
+          # Check the result of each analysis job
+          analysis_jobs='${{ toJson(needs.analysis.result) }}'
+
+          if [[ "${{ needs.analysis.result }}" == "success" ]]; then
+            echo "✅ All analyses passed successfully"
+            echo "- PHPStan: ✅ Success"
+            echo "- Laravel Pint: ✅ Success"
+            echo "- PHPMD: ✅ Success"
+          else
+            echo "❌ Some analyses failed"
+            echo ""
+            echo "Please check the logs of each analysis for more details."
+            echo "All analyses were executed in parallel to optimize execution time."
+
+            # The workflow will fail here to indicate there are issues
+            exit 1
+          fi

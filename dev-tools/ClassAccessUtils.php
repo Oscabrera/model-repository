@@ -1,6 +1,6 @@
 <?php
 
-namespace Oscabrera\DevTools;
+namespace Oscabrera\ModelRepository\DevTools;
 
 use Illuminate\Foundation\Http\FormRequest;
 use InvalidArgumentException;
