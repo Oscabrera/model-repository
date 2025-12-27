@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\AnalyzerTool\CIScripts\Analyzer;
+namespace Oscabrera\ModelRepository\AnalyzerTool\CIScripts\Analyzer;
 
 use RuntimeException;
 
@@ -10,9 +10,8 @@ class FileHandler
 {
     public function __construct(
         protected string $extension,
-        protected string $branch
-    ) {
-    }
+        protected string $branch,
+    ) {}
 
     /**
      * Get the modified files git log.
@@ -47,7 +46,7 @@ class FileHandler
             'escapeshellarg',
             array_filter($gitLogLines, function ($line) {
                 return $this->isValidFile($line);
-            })
+            }),
         );
         return implode(' ', $escapedFiles);
     }

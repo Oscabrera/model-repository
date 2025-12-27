@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\AnalyzerTool\CIScripts\Analyzer\Constants;
+namespace Oscabrera\ModelRepository\AnalyzerTool\CIScripts\Analyzer\Constants;
 
 class Color
 {

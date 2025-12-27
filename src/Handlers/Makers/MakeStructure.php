@@ -19,9 +19,8 @@ class MakeStructure
     public function __construct(
         protected File $file,
         protected BindingServices $bindingServices,
-        protected Str $str
-    ) {
-    }
+        protected Str $str,
+    ) {}
 
     /**
      * Creates a class from a stub.
@@ -36,14 +35,14 @@ class MakeStructure
         string $classPath,
         array $replacements,
         string $type,
-        Options $options
+        Options $options,
     ): array {
         $this->validateClassExists($classPath, $type, $options);
         $contentStub = $this->getStubContent($type);
         $classContent = str_replace(
             array_keys($replacements),
             array_values($replacements),
-            $contentStub
+            $contentStub,
         );
         file_put_contents($classPath, $classContent);
         return ['type' => $type, 'path' => $classPath];
@@ -58,13 +57,13 @@ class MakeStructure
     protected function validateClassExists(
         string $classPath,
         string $type,
-        Options $options
+        Options $options,
     ): void {
         if ($this->file::exists($classPath) && !$options->isForce()) {
             throw new CreateStructureException(
                 'already exists',
                 $type,
-                $classPath
+                $classPath,
             );
         }
     }
@@ -75,7 +74,7 @@ class MakeStructure
     protected function getStubPath(string $type): string
     {
         return strval(
-            realpath(__DIR__ . '/../../../stubs/' . $type . '.stub')
+            realpath(__DIR__ . '/../../../stubs/' . $type . '.stub'),
         );
     }
 
@@ -100,14 +99,14 @@ class MakeStructure
     protected function getFilePath(
         string $directory,
         string $name,
-        string $type
+        string $type,
     ): string {
         if (!$this->file::exists($directory)) {
             $this->file::makeDirectory(
                 $directory,
                 0755,
                 true,
-                true
+                true,
             );
         }
         return $directory . "/{$name}{$type}.php";
@@ -120,28 +119,28 @@ class MakeStructure
     protected function updateConfigFile(
         string $name,
         string $interfaceClass,
-        string $serviceClass
+        string $serviceClass,
     ): void {
         $this->bindingServices->updateConfigFile(
             $name,
             $interfaceClass,
-            $serviceClass
+            $serviceClass,
         );
     }
 
     /**
-     * Convert the given name to snake case.
+     * Convert the given name to kebab case.
      */
-    protected function nameSnakeCase(string $name): string
+    protected function nameKebabCase(string $name): string
     {
-        return $this->str::snake($name);
+        return $this->str::kebab($name);
     }
 
     /**
-     * Returns the plural form of the given name in snake case.
+     * Returns the plural form of the given name in kebab case.
      */
-    protected function namePluralSnakeCase(string $name): string
+    protected function namePluralKebabCase(string $name): string
     {
-        return $this->str::plural($this->nameSnakeCase($name));
+        return $this->str::plural($this->nameKebabCase($name));
     }
 }

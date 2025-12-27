@@ -22,7 +22,7 @@ class MakeModel
     public function make(
         Command $command,
         string $name,
-        Options $options
+        Options $options,
     ): void {
         $command->call(
             'make:model',
@@ -32,7 +32,7 @@ class MakeModel
                 '--seed' => $options->hasSeeder(),
                 '--factory' => $options->hasFactory(),
                 '--force' => $options->isForce(),
-            ]
+            ],
         );
     }
 }

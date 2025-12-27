@@ -1,0 +1,16 @@
+name: prepare-analysis-env
+description: Prepare environment for static analysis
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare environment
+      shell: bash
+      run: |-
+        chmod +x vendor/bin/*
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git fetch origin development
+        echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+        echo "HEAD commit: $(git rev-parse HEAD)"
+        echo "PR commits between development and HEAD:"
+        git log --oneline origin/development..HEAD

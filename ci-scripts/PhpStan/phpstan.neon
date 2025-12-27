@@ -12,6 +12,7 @@ parameters:
     excludePaths:
         - ../../vendor/*
         - ../../phpinsights.php
+        - ../../tests/*
     checkMissingIterableValueType: true
     treatPhpDocTypesAsCertain: false
     reportUnmatchedIgnoredErrors: false

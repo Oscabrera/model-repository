@@ -1,0 +1,19 @@
+# .github/actions/phpstan/action.yml
+name: phpstan
+description: Run PHPStan static analysis.
+outputs:
+  exit_code:
+    description: "Exit code from PHPStan execution"
+    value: ${{ steps.run_phpstan.outputs.exit_code }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run PHPStan
+      id: run_phpstan
+      shell: bash
+      run: |-
+        php devops/phpstan/analyzer.php
+        PHPSTAN_EXIT_CODE=$?
+        echo "PHPStan completed with exit code: $PHPSTAN_EXIT_CODE"
+        echo "exit_code=$PHPSTAN_EXIT_CODE" >> $GITHUB_OUTPUT

@@ -37,7 +37,7 @@ class MakeRequest extends MakeStructure
             $path,
             $replace,
             $this->type,
-            $options
+            $options,
         );
     }
 

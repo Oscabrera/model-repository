@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\AnalyzerTool\CIScripts\Analyzer;
+namespace Oscabrera\ModelRepository\AnalyzerTool\CIScripts\Analyzer;
 
 class CommandBuilder
 {
@@ -11,9 +11,8 @@ class CommandBuilder
      */
     public function __construct(
         protected string $command,
-        protected array $args = []
-    ) {
-    }
+        protected array $args = [],
+    ) {}
 
     /**
      * Build the command to execute.
@@ -42,7 +41,7 @@ class CommandBuilder
             static function ($arg) use ($toRemove, $prefixToRemove) {
                 return !in_array($arg, $toRemove) &&
                     !str_starts_with($arg, $prefixToRemove);
-            }
+            },
         );
     }
 }

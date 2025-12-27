@@ -20,8 +20,8 @@ trait OptionsTrait
     {
         if (is_array($commandOption)) {
             foreach ($commandOption as $value) {
-                if ($this->hasOption($value)) {
-                    return boolval($this->option($value));
+                if ($this->hasOption($value) && boolval($this->option($value))) {
+                    return true;
                 }
             }
             return false;

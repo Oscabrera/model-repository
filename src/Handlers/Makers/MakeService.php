@@ -40,7 +40,7 @@ class MakeService extends MakeStructure implements BindingInterface
             $path,
             $replace,
             $this->type,
-            $options
+            $options,
         );
     }
 
@@ -55,9 +55,9 @@ class MakeService extends MakeStructure implements BindingInterface
         $service = "{$pathService}{$name}{$this->type}";
         $interface = "{$pathInterface}I{$name}{$this->type}";
         $this->updateConfigFile(
-            $this->nameSnakeCase($name) . '-service',
+            $this->nameKebabCase($name) . '-service',
             $interface,
-            $service
+            $service,
         );
     }
 

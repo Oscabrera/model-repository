@@ -1,0 +1,54 @@
+name: check-analysis
+description: Verify static analysis results and provide a summary report
+
+inputs:
+  phpstan_exit_code:
+    description: "Exit code from PHPStan analysis"
+    required: true
+  pint_exit_code:
+    description: "Exit code from Laravel Pint analysis"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check analysis results
+      shell: bash
+      run: |
+        echo "### Static Analysis Results 🔍" >> $GITHUB_STEP_SUMMARY
+
+        # Handle empty values with defaults
+        PHPSTAN_CODE="${{ inputs.phpstan_exit_code }}"
+        PINT_CODE="${{ inputs.pint_exit_code }}"
+
+        # Set default values if empty
+        [ -z "$PHPSTAN_CODE" ] && PHPSTAN_CODE="1" && echo "Warning: PHPStan exit code was empty, using default 1"
+        [ -z "$PINT_CODE" ] && PINT_CODE="1" && echo "Warning: Laravel Pint exit code was empty, using default 1"
+
+        echo "Using PHPStan exit code: $PHPSTAN_CODE"
+        echo "Using Laravel Pint exit code: $PINT_CODE"
+
+        FAIL=0
+
+        if [ "$PHPSTAN_CODE" = "0" ]; then
+          echo "✅ PHPStan: PASSED" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ PHPStan: FAILED (exit code: $PHPSTAN_CODE)" >> $GITHUB_STEP_SUMMARY
+          FAIL=1
+        fi
+
+        if [ "$PINT_CODE" = "0" ]; then
+          echo "✅ Laravel Pint: PASSED" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Laravel Pint: FAILED (exit code: $PINT_CODE)" >> $GITHUB_STEP_SUMMARY
+          FAIL=1
+        fi
+
+        if [ "$FAIL" = "1" ]; then
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "⚠️ One or more analyses have failed. Please review the errors above." >> $GITHUB_STEP_SUMMARY
+          exit 1
+        else
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🎉 All static analysis checks passed successfully!" >> $GITHUB_STEP_SUMMARY
+        fi
