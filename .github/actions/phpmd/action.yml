@@ -1,0 +1,22 @@
+# .github/actions/phpmd/action.yml
+name: phpmd
+description: Run PHP Mess Detector static analysis.
+outputs:
+  exit_code:
+    description: "Exit code from PHPMD execution"
+    value: ${{ steps.run_phpmd.outputs.exit_code }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run PHPMD
+      id: run_phpmd
+      shell: bash
+      run: |-
+        mkdir -p analysis-logs
+        set +e
+        set -o pipefail
+        composer run phpmd 2>&1 | tee analysis-logs/phpmd.log
+        PHPMD_EXIT_CODE=${PIPESTATUS[0]}
+        echo "PHPMD completed with exit code: $PHPMD_EXIT_CODE"
+        echo "exit_code=$PHPMD_EXIT_CODE" >> $GITHUB_OUTPUT
