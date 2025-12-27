@@ -5,7 +5,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\MessageBag;
-use Oscabrera\DevTools\ClassAccessUtils;
+use Oscabrera\ModelRepository\DevTools\ClassAccessUtils;
 use Symfony\Component\HttpFoundation\Response;
 
 beforeEach(function () {

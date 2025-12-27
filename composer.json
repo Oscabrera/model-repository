@@ -15,7 +15,7 @@
         "psr-4": {
             "Oscabrera\\ModelRepository\\": "src/",
             "Oscabrera\\ModelRepository\\AnalyzerTool\\CIScripts\\": "ci-scripts/",
-            "Oscabrera\\DevTools\\": "dev-tools/"
+            "Oscabrera\\ModelRepository\\DevTools\\": "dev-tools/"
         }
     },
     "require": {
@@ -58,7 +58,6 @@
         "pest-feature": "./vendor/bin/pest tests/Feature",
         "pest-unit": "./vendor/bin/pest tests/Unit",
         "pest-xml": "./vendor/bin/pest --coverage --coverage-clover=coverage.xml",
-        "act": "@act-pr",
         "act-pr": "act pull_request -P ubuntu-24.04=ghcr.io/catthehacker/ubuntu:act-24.04 --rm=false"
     },
     "config": {

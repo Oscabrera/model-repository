@@ -1,6 +1,6 @@
 <?php
 
-use Oscabrera\DevTools\ClassAccessUtils;
+use Oscabrera\ModelRepository\DevTools\ClassAccessUtils;
 
 beforeEach(function () {
     $this->classUsingTrait = (new ClassAccessUtils())->getClassUsingTrait('ArrayHandlerBindingTrait');
