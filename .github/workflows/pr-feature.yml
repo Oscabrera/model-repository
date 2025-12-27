@@ -1,6 +1,16 @@
 # Parallel code analysis for PRs - PHPStan, Laravel Pint and PHPMD
 name: Code Analysis
 
+permissions:
+  contents: read
+
+env:
+  PHP_VERSION: '8.2'
+
+concurrency:
+  group: code-analysis-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches-ignore:
@@ -12,11 +22,14 @@ on:
       - 'develop'
 
 jobs:
-  setup:
-    name: Setup Dependencies
+  prepare-env:
+    name: Prepare Environment
     runs-on: ubuntu-24.04
     outputs:
-      cache-key: ${{ steps.cache-key.outputs.key }}
+      base-key: ${{ steps.base-key.outputs.key }}
+      vendor-key: ${{ steps.vendor-key.outputs.key }}
+      composer-cache-key: ${{ steps.composer-cache-key.outputs.key }}
+      vendor-artifact-name: ${{ steps.vendor-artifact.outputs.name }}
 
     steps:
       - name: Checkout code
@@ -24,109 +37,244 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.3
-          tools: composer
-          coverage: none
+      - name: Generate base key (OS + PHP + composer.lock)
+        id: base-key
+        run: echo "key=${{ runner.os }}-php${{ env.PHP_VERSION }}-${{ hashFiles('**/composer.lock') }}" >> $GITHUB_OUTPUT
 
-      - name: Generate cache key
-        id: cache-key
-        run: echo "key=${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}" >> $GITHUB_OUTPUT
+      - name: Generate vendor cache key
+        id: vendor-key
+        run: echo "key=vendor-dev-${{ steps.base-key.outputs.key }}" >> $GITHUB_OUTPUT
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: vendor
-          key: ${{ steps.cache-key.outputs.key }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+      - name: Generate Composer cache key
+        id: composer-cache-key
+        run: echo "key=composer-cache-${{ steps.base-key.outputs.key }}" >> $GITHUB_OUTPUT
 
-      - name: Install Composer dependencies
-        run: composer install --no-progress --prefer-dist --optimize-autoloader
+      - name: Generate vendor artifact name
+        id: vendor-artifact
+        run: echo "name=${{ steps.vendor-key.outputs.key }}" >> $GITHUB_OUTPUT
 
-  analysis:
-    name: Run ${{ matrix.tool }}
+  install-deps:
+    name: Install Composer Dependencies
+    needs: prepare-env
     runs-on: ubuntu-24.04
-    needs: setup
-    continue-on-error: true
-    strategy:
-      fail-fast: false
-      matrix:
-        tool: [phpstan, pint, phpmd]
-        include:
-          - tool: phpstan
-            command: composer phpstan
-            display: PHPStan
-          - tool: pint
-            command: composer pint
-            display: Laravel Pint
-          - tool: phpmd
-            command: composer phpmd
-            display: PHPMD
-
+    timeout-minutes: 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup PHP
+      - name: Set up PHP and install deps (once)
+        uses: ./.github/actions/composer-setup-dev
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          vendor-key: ${{ needs.prepare-env.outputs.vendor-key }}
+          composer-cache-key: ${{ needs.prepare-env.outputs.composer-cache-key }}
+
+      - name: Upload vendor as artifact
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ needs.prepare-env.outputs.vendor-artifact-name }}
+          path: vendor
+          if-no-files-found: error
+          retention-days: 1
+
+  phpstan:
+    name: PHPStan Analysis
+    needs: [prepare-env, install-deps]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      exit_code: ${{ steps.analysis.outputs.exit_code }}
+      artifact_id: ${{ steps.upload_phpstan_log.outputs.artifact-id || '' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP runtime
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.3
+          php-version: ${{ env.PHP_VERSION }}
           tools: composer
-          coverage: none
 
-      - name: Restore Composer dependencies
-        uses: actions/cache@v4
+      - name: Download vendor artifact
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/download-artifact@v4
         with:
-          path: vendor
-          key: ${{ needs.setup.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          name: ${{ needs.prepare-env.outputs.vendor-artifact-name }}
+          path: .
 
-      - name: Run ${{ matrix.display }}
+      - name: Install deps for local act
+        if: ${{ env.ACT == 'true' }}
+        uses: ./.github/actions/composer-setup-dev
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          vendor-key: ${{ needs.prepare-env.outputs.vendor-key }}
+          composer-cache-key: ${{ needs.prepare-env.outputs.composer-cache-key }}
+
+      - uses: ./.github/actions/prepare-analysis-env
+
+      - name: Run PHPStan
         id: analysis
-        run: |
-          echo "::group::Running ${{ matrix.display }}"
-          if ${{ matrix.command }}; then
-            echo "result=success" >> $GITHUB_OUTPUT
-            echo "✅ ${{ matrix.display }} executed successfully"
-          else
-            echo "result=failure" >> $GITHUB_OUTPUT
-            echo "❌ ${{ matrix.display }} failed"
-            exit 1
-          fi
-          echo "::endgroup::"
+        continue-on-error: true
+        uses: ./.github/actions/phpstan
+
+      - name: Upload PHPStan log
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/upload-artifact@v4
+        id: upload_phpstan_log
+        with:
+          name: phpstan-log-${{ needs.prepare-env.outputs.base-key }}
+          path: analysis-logs/phpstan.log
+          if-no-files-found: warn
+          retention-days: 7
+
+  laravel_pint:
+    name: Laravel Pint
+    needs: [prepare-env, install-deps]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      exit_code: ${{ steps.analysis.outputs.exit_code }}
+      artifact_id: ${{ steps.upload_pint_log.outputs.artifact-id || '' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP runtime
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer
+
+      - name: Download vendor artifact
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.prepare-env.outputs.vendor-artifact-name }}
+          path: .
+
+      - name: Install deps for local act
+        if: ${{ env.ACT == 'true' }}
+        uses: ./.github/actions/composer-setup-dev
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          vendor-key: ${{ needs.prepare-env.outputs.vendor-key }}
+          composer-cache-key: ${{ needs.prepare-env.outputs.composer-cache-key }}
+
+      - uses: ./.github/actions/prepare-analysis-env
+
+      - name: Run Laravel Pint
+        id: analysis
+        continue-on-error: true
+        uses: ./.github/actions/laravel-pint
+
+      - name: Upload Laravel Pint log
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/upload-artifact@v4
+        id: upload_pint_log
+        with:
+          name: laravel-pint-log-${{ needs.prepare-env.outputs.base-key }}
+          path: analysis-logs/laravel-pint.log
+          if-no-files-found: warn
+          retention-days: 7
+
+  phpmd:
+    name: PHPMD Analysis
+    needs: [prepare-env, install-deps]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      exit_code: ${{ steps.analysis.outputs.exit_code }}
+      artifact_id: ${{ steps.upload_phpmd_log.outputs.artifact-id || '' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP runtime
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer
+
+      - name: Download vendor artifact
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.prepare-env.outputs.vendor-artifact-name }}
+          path: .
+
+      - name: Install deps for local act
+        if: ${{ env.ACT == 'true' }}
+        uses: ./.github/actions/composer-setup-dev
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          vendor-key: ${{ needs.prepare-env.outputs.vendor-key }}
+          composer-cache-key: ${{ needs.prepare-env.outputs.composer-cache-key }}
+
+      - uses: ./.github/actions/prepare-analysis-env
+
+      - name: Run PHPMD
+        id: analysis
+        continue-on-error: true
+        uses: ./.github/actions/phpmd
+
+      - name: Upload PHPMD log
+        if: ${{ env.ACT != 'true' }}
+        uses: actions/upload-artifact@v4
+        id: upload_phpmd_log
+        with:
+          name: phpmd-log-${{ needs.prepare-env.outputs.base-key }}
+          path: analysis-logs/phpmd.log
+          if-no-files-found: warn
+          retention-days: 7
 
   summary:
     name: Analysis Summary
+    needs: [phpstan, laravel_pint, phpmd]
     runs-on: ubuntu-24.04
-    needs: [setup, analysis]
     if: always()
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Check analysis results
+        uses: ./.github/actions/check-analysis
+        with:
+          phpstan_exit_code: ${{ needs.phpstan.outputs.exit_code || '1' }}
+          pint_exit_code: ${{ needs.laravel_pint.outputs.exit_code || '1' }}
+          phpmd_exit_code: ${{ needs.phpmd.outputs.exit_code || '1' }}
+
+      - name: Attach artifacts links to summary
+        shell: bash
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          PHPSTAN_ARTIFACT_ID: ${{ needs.phpstan.outputs.artifact_id }}
+          PINT_ARTIFACT_ID: ${{ needs.laravel_pint.outputs.artifact_id }}
+          PHPMD_ARTIFACT_ID: ${{ needs.phpmd.outputs.artifact_id }}
         run: |
-          echo "🔍 Code analysis summary:"
-          echo "========================="
-
-          # Check the result of each analysis job
-          analysis_jobs='${{ toJson(needs.analysis.result) }}'
-
-          if [[ "${{ needs.analysis.result }}" == "success" ]]; then
-            echo "✅ All analyses passed successfully"
-            echo "- PHPStan: ✅ Success"
-            echo "- Laravel Pint: ✅ Success"
-            echo "- PHPMD: ✅ Success"
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Analysis Artifacts" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${PHPSTAN_ARTIFACT_ID}" ]; then
+            echo "- PHPStan log: [download](${RUN_URL}/artifacts/${PHPSTAN_ARTIFACT_ID})" >> $GITHUB_STEP_SUMMARY
           else
-            echo "❌ Some analyses failed"
-            echo ""
-            echo "Please check the logs of each analysis for more details."
-            echo "All analyses were executed in parallel to optimize execution time."
-
-            # The workflow will fail here to indicate there are issues
-            exit 1
+            echo "- PHPStan log: artifact available on GitHub run page" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -n "${PINT_ARTIFACT_ID}" ]; then
+            echo "- Laravel Pint log: [download](${RUN_URL}/artifacts/${PINT_ARTIFACT_ID})" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- Laravel Pint log: artifact available on GitHub run page" >> $GITHUB_STEP_SUMMARY
+          fi
+          if [ -n "${PHPMD_ARTIFACT_ID}" ]; then
+            echo "- PHPMD log: [download](${RUN_URL}/artifacts/${PHPMD_ARTIFACT_ID})" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- PHPMD log: artifact available on GitHub run page" >> $GITHUB_STEP_SUMMARY
           fi

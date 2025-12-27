@@ -13,7 +13,10 @@ runs:
       id: run_phpstan
       shell: bash
       run: |-
-        php devops/phpstan/analyzer.php
-        PHPSTAN_EXIT_CODE=$?
+        mkdir -p analysis-logs
+        set +e
+        set -o pipefail
+        composer run phpstan 2>&1 | tee analysis-logs/phpstan.log
+        PHPSTAN_EXIT_CODE=${PIPESTATUS[0]}
         echo "PHPStan completed with exit code: $PHPSTAN_EXIT_CODE"
         echo "exit_code=$PHPSTAN_EXIT_CODE" >> $GITHUB_OUTPUT
