@@ -2,6 +2,18 @@
 name: composer-setup-dev
 description: Setup PHP and install dependencies with Composer (development environment)
 
+inputs:
+  php-version:
+    description: PHP version to use
+    required: false
+    default: '8.2'
+  vendor-key:
+    description: Cache key for vendor directory
+    required: true
+  composer-cache-key:
+    description: Cache key for Composer packages cache (~/.composer/cache)
+    required: true
+
 runs:
   using: "composite"
 
@@ -9,7 +21,7 @@ runs:
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.2
+        php-version: ${{ inputs.php-version }}
         tools: composer
 
     - name: Cache vendor directory
@@ -17,14 +29,14 @@ runs:
       uses: actions/cache@v4
       with:
         path: vendor
-        key: vendor-dev-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+        key: ${{ inputs.vendor-key }}
 
     - name: Cache Composer packages
       if: steps.cache-vendor.outputs.cache-hit != 'true'
       uses: actions/cache@v4
       with:
         path: ~/.composer/cache
-        key: composer-cache-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+        key: ${{ inputs.composer-cache-key }}
         restore-keys: |
           composer-cache-${{ runner.os }}-
 
@@ -37,4 +49,3 @@ runs:
       if: steps.cache-vendor.outputs.cache-hit == 'true'
       run: composer dump-autoload --no-interaction
       shell: bash
-
