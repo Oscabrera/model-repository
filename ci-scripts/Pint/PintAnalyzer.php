@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\AnalyzerTool\CIScripts\Pint;
+namespace Oscabrera\ModelRepository\AnalyzerTool\CIScripts\Pint;
 
-use Oscabrera\AnalyzerTool\CIScripts\Analyzer\Analyzer;
+use Oscabrera\ModelRepository\AnalyzerTool\CIScripts\Analyzer\Analyzer;
 
 class PintAnalyzer extends Analyzer
 {

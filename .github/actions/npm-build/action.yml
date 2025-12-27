@@ -1,0 +1,42 @@
+# .github/actions/npm-build/action.yml
+name: npm-build
+description: Setup Node.js, install dependencies, and build project with optimized caching
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Cache node_modules
+      id: cache-node-modules
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: node-modules-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+    - name: Cache npm
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          npm-${{ runner.os }}-
+
+    - name: Install dependencies
+      if: steps.cache-node-modules.outputs.cache-hit != 'true'
+      run: npm ci
+      shell: bash
+
+    - name: Verify dependencies integrity
+      if: steps.cache-node-modules.outputs.cache-hit == 'true'
+      run: npm ls --depth=0 || true
+      shell: bash
+
+    - name: Build project
+      run: npm run build
+      shell: bash
+
