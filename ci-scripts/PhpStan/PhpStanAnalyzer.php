@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Oscabrera\AnalyzerTool\CIScripts\PhpStan;
+namespace Oscabrera\ModelRepository\AnalyzerTool\CIScripts\PhpStan;
 
-use Oscabrera\AnalyzerTool\CIScripts\Analyzer\Analyzer;
+use Oscabrera\ModelRepository\AnalyzerTool\CIScripts\Analyzer\Analyzer;
 
 class PhpStanAnalyzer extends Analyzer
 {
@@ -19,7 +19,7 @@ class PhpStanAnalyzer extends Analyzer
             <<<CMD
             ./vendor/bin/phpstan analyse --memory-limit=1G -c ci-scripts/PhpStan/phpstan.neon --ansi %FILES%
             CMD,
-            $args
+            $args,
         );
     }
 }

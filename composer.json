@@ -14,12 +14,13 @@
     "autoload": {
         "psr-4": {
             "Oscabrera\\ModelRepository\\": "src/",
-            "Oscabrera\\AnalyzerTool\\CIScripts\\": "ci-scripts/"
+            "Oscabrera\\ModelRepository\\AnalyzerTool\\CIScripts\\": "ci-scripts/",
+            "Oscabrera\\ModelRepository\\DevTools\\": "dev-tools/"
         }
     },
     "require": {
         "php": "^8.1",
-        "laravel/framework": "^9.0|^10.0|^11.0",
+        "laravel/framework": "^9.0|^10.0|^11.0|^12.0",
         "oscabrera/laravel-query-filters": "^1.0",
         "oscabrera/laravel-json-api-format-paginate": "^1.0",
         "spatie/laravel-route-attributes": "^1.21"
@@ -44,16 +45,25 @@
     "require-dev": {
         "phpstan/phpstan": "^1.11",
         "laravel/pint": "^1.16",
-        "phpmd/phpmd": "^2.15"
+        "phpmd/phpmd": "^2.15",
+        "pestphp/pest-plugin-drift": "^3.0",
+        "pestphp/pest": "^3.0",
+        "mockery/mockery": "^1.6"
     },
     "scripts": {
         "phpstan": "php ci-scripts/PhpStan/run.php",
         "pint": "php ci-scripts/Pint/run.php",
-        "phpmd": "php ci-scripts/PhpMD/run.php"
+        "phpmd": "php ci-scripts/PhpMD/run.php",
+        "pest": "./vendor/bin/pest",
+        "pest-feature": "./vendor/bin/pest tests/Feature",
+        "pest-unit": "./vendor/bin/pest tests/Unit",
+        "pest-xml": "./vendor/bin/pest --coverage --coverage-clover=coverage.xml",
+        "act-pr": "act pull_request -P ubuntu-24.04=ghcr.io/catthehacker/ubuntu:act-24.04 --rm=false"
     },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "pestphp/pest-plugin": true
         }
     }
 }

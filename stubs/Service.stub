@@ -39,7 +39,7 @@ class DummyClass implements DummyInterface
         DummyModelRequest $request
     ): EntityResourceTransformer {
         return new EntityResourceTransformer(
-            $this->repository->create($request->all())
+            $this->repository->create($request->validated())
         );
     }
 
@@ -67,7 +67,7 @@ class DummyClass implements DummyInterface
     {
         return $this->repository->update(
             $this->repository->read($id),
-            $request->all()
+            $request->validated()
         );
     }
 

@@ -1,0 +1,38 @@
+# .github/actions/composer-setup/action.yml
+name: composer-setup
+description: Setup PHP and install dependencies with Composer
+runs:
+  using: "composite"
+
+  steps:
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 8.2
+        tools: composer
+
+    - name: Cache vendor directory
+      id: cache-vendor
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: vendor-prod-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
+    - name: Cache Composer packages
+      if: steps.cache-vendor.outputs.cache-hit != 'true'
+      uses: actions/cache@v4
+      with:
+        path: ~/.composer/cache
+        key: composer-cache-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          composer-cache-${{ runner.os }}-
+
+    - name: Install Composer dependencies
+      if: steps.cache-vendor.outputs.cache-hit != 'true'
+      run: composer install --ignore-platform-reqs --no-dev --optimize-autoloader
+      shell: bash
+
+    - name: Verify Composer dependencies integrity
+      if: steps.cache-vendor.outputs.cache-hit == 'true'
+      run: composer dump-autoload --optimize --no-dev --no-interaction
+      shell: bash
