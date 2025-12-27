@@ -7,10 +7,17 @@ runs:
     - name: Prepare environment
       shell: bash
       run: |-
-        chmod +x vendor/bin/*
-        git config --global --add safe.directory $GITHUB_WORKSPACE
-        git fetch origin development
+        chmod +x vendor/bin/* || true
+        git config --global --add safe.directory $GITHUB_WORKSPACE || true
+        # Try to fetch the default comparison branch used by analyzers
+        git fetch origin main || true
+        git fetch origin develop || true
+        git fetch origin development || true
         echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
         echo "HEAD commit: $(git rev-parse HEAD)"
-        echo "PR commits between development and HEAD:"
-        git log --oneline origin/development..HEAD
+        echo "PR commits between main and HEAD (if available):"
+        git log --oneline origin/main..HEAD || true
+        echo "PR commits between develop and HEAD (if available):"
+        git log --oneline origin/develop..HEAD || true
+        echo "PR commits between development and HEAD (if available):"
+        git log --oneline origin/development..HEAD || true

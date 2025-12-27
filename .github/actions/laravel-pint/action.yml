@@ -13,7 +13,10 @@ runs:
       id: run_pint
       shell: bash
       run: |-
-        php devops/laravel-pint/analyzer.php
-        PINT_EXIT_CODE=$?
+        mkdir -p analysis-logs
+        set +e
+        set -o pipefail
+        composer run pint 2>&1 | tee analysis-logs/laravel-pint.log
+        PINT_EXIT_CODE=${PIPESTATUS[0]}
         echo "Laravel Pint completed with exit code: $PINT_EXIT_CODE"
         echo "exit_code=$PINT_EXIT_CODE" >> $GITHUB_OUTPUT
